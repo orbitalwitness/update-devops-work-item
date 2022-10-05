@@ -1,0 +1,13 @@
+
+name: "Update DevOps Work Item State"
+description: "This action will update the state of a work item state in Boards within Azure DevOps"
+author: "Steve Doggett"
+branding:
+  icon: "git-pull-request"
+  color: "black"
+outputs:
+  id:
+    description: "Work item state updated"
+runs:
+  using: "node16"
+  main: "index.js"

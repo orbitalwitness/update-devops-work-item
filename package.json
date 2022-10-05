@@ -1,0 +1,27 @@
+{
+  "name": "update-devops-work-item",
+  "version": "1.0.0",
+  "description": "Github Action to allow updating of a DevOps work item state.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orbitalwitness/update-devops-work-item.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orbitalwitness/update-devops-work-item/issues"
+  },
+  "homepage": "https://github.com/orbitalwitness/update-devops-work-item#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "azure-devops-node-api": "^11.2.0",
+    "btoa": "^1.2.1",
+    "is-plain-object": "^5.0.0",
+    "node-fetch": "^3.2.10"
+  }
+}
