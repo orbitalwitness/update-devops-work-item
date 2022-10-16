@@ -264,3 +264,5 @@ __pycache__/
 
 /**/dist/*
 /**/node_modules/*
+
+.env
