@@ -1,4 +1,4 @@
-import * as azureDevOpsHandler from 'azure-devops-node-api'
+const azureDevOpsHandler = require('azure-devops-node-api')
 
 /**
  * Obtain a reference to the Azure Devops work item tracking API

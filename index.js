@@ -1,18 +1,15 @@
-import core from '@actions/core'
-import github from '@actions/github'
-import { getValuesFromPayload } from './helpers'
-import {
-    getPrInfo,
-    getWorkItemIdFromPr
-} from './services/github-service'
-import { updateWorkItemState } from './services/azure-devops-service'
+const core = require('@actions/core')
+const github = require('@actions/github')
+const helpers = require('./helpers')
+const githubService = require('./services/github-service')
+const azureDevOpsService =  require('./services/azure-devops-service')
 
 
 main()
 
 function main() {
 
-    const vm = getValuesFromPayload(github.context.payload)
+    const vm = helpers.getValuesFromPayload(github.context.payload)
     if (vm.action !== 'closed') {
         getWorkItemId(vm.env)
     } else {
@@ -23,18 +20,18 @@ function main() {
 
 const getWorkItemId = async (env) => {
     core.debug('Getting PR info')
-    const prInfo = getPrInfo(env)
+    const prInfo = githubService.getPrInfo(env)
     if(!prInfo.success) {
         core.setFailed(prInfo.message)
     }
 
-    const workItemIdResponse = getWorkItemIdFromPr(prInfo.body, prInfo.title)
+    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title)
     if (!workItemIdResponse.success) {
         core.setFailed(workItemIdResponse.message)
     }
     core.debug(`Found work item id from PR${ workItemIdResponse.workItemId }`)
 
-    const updateWorkItemStateResponse = await updateWorkItemState(workItemIdResponse.workItemId, env)
+    const updateWorkItemStateResponse = await azureDevOpsService.updateWorkItemState(workItemIdResponse.workItemId, env)
     if (!updateWorkItemStateResponse.success) {
         core.setFailed(updateWorkItemStateResponse.message)
     }

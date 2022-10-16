@@ -1,6 +1,5 @@
-import fetch from 'node-fetch'
-
-import { getRequestHeaders } from '../helpers'
+const fetch = require("node-fetch")
+const helpers = require('../helpers')
 
 /**
  * Uses the Github API to return the body, title and status of the pull request
@@ -21,7 +20,7 @@ export const getPrInfo = async (env) => {
         const requestUrl = 'https://api.github.com/repos/' + env.gh_repo_owner + '/' + env.gh_repo + '/pulls/' + env.pull_number
         const response = await fetch(requestUrl, {
             method: 'GET',
-            headers: getRequestHeaders(env)
+            headers: helpers.getRequestHeaders(env)
         })
         const result = await response.json()
 
@@ -129,7 +128,7 @@ export const getPrState = async (pullRequestNumber, env) =>{
     const requestUrl = `https://api.github.com/repos/${ env.gh_repo_owner }/${ env.gh_repo }/pulls/${ pullRequestNumber }`;
     const fetchResponse = await fetch (requestUrl, {
         method: 'GET',
-        headers: getRequestHeaders(env)
+        headers: helpers.getRequestHeaders(env)
     });
     const jsonResponse = await fetchResponse.json();
 
@@ -150,7 +149,7 @@ async function getMergeState(pullRequestNumber, env) {
     const requestUrl = `https://api.github.com/repos/${ env.gh_repo_owner }/${ env.gh_repo }/pulls/${ pullRequestNumber }/merge`;
     const fetchResponse = await fetch(requestUrl, {
         method: 'GET',
-        headers: getRequestHeaders(env)
+        headers: helpers.getRequestHeaders(env)
     })
 
     const jsonResponse = await fetchResponse.json();

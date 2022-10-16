@@ -1,5 +1,5 @@
-import fetch from 'node-fetch'
-import core from '@actions/core'
+const fetch = require("node-fetch")
+const core = require('@actions/core')
 
 global.Headers = fetch.Headers
 
