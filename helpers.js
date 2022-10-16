@@ -1,20 +1,4 @@
-const fetch = require("node-fetch")
 const core = require('@actions/core')
-
-global.Headers = fetch.Headers
-
-/**
- * Setup and return the Github API headers with the token to make requests.
- * @param env
- * @returns {Headers}
- */
-export const getRequestHeaders = (env) => {
-    let h = new Headers()
-    let auth = 'token ' + env.gh_token
-    h.append('Authorization', auth)
-    return h
-}
-
 /**
  * Create an object with the required values for use in the action.
  * @param payload
@@ -26,14 +10,14 @@ export const getValuesFromPayload = (payload) => {
     const env = {
         action: payload.action !== undefined ? payload.action : '',
         env: {
-            organisation: core.getInput('ado_organisation'),
+            organisation: core.getInput('ado_organisation', { required: true }),
             org_url: `https://dev.azure.com/${ core.getInput('ado_organisation') }`,
-            ado_token: core.getInput('ado_token'),
-            gh_repo_owner: core.getInput('gh_repo_owner'),
-            gh_repo: core.getInput('gh_repo'),
-            pull_number: core.getInput('pull_number'),
-            gh_token: core.getInput('gh_token'),
-            new_state: core.getInput('new_state'),
+            ado_token: core.getInput('ado_token', { required: true }),
+            gh_repo_owner: core.getInput('gh_repo_owner', { required: true }),
+            gh_repo: core.getInput('gh_repo', { required: true }),
+            pull_number: core.getInput('pull_number', { required: true }),
+            gh_token: core.getInput('gh_token', { required: true }),
+            new_state: core.getInput('new_state', { required: true }),
             description: core.getInput('description') ?? '',
             closed_state: core.getInput('closed_state') ?? 'Closed'
         }

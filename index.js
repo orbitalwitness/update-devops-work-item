@@ -4,14 +4,10 @@ const helpers = require('./helpers')
 const githubService = require('./services/github-service')
 const azureDevOpsService =  require('./services/azure-devops-service')
 
-
-main()
-
-function main() {
-
+const run = async () => {
     const vm = helpers.getValuesFromPayload(github.context.payload)
     if (vm.action !== 'closed') {
-        getWorkItemId(vm.env)
+        await getWorkItemId(vm.env)
     } else {
         core.setFailed('Pull request closed')
     }
@@ -37,3 +33,5 @@ const getWorkItemId = async (env) => {
     }
     core.debug(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
 }
+
+run()

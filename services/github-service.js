@@ -1,6 +1,8 @@
-const fetch = require("node-fetch")
-const helpers = require('../helpers')
+const github = require('@actions/github')
 
+export const getConnection = async (token) => {
+    return github.getOctokit(token)
+}
 /**
  * Uses the Github API to return the body, title and status of the pull request
  * @param env
@@ -17,20 +19,15 @@ export const getPrInfo = async (env) => {
     }
 
     try {
-        const requestUrl = 'https://api.github.com/repos/' + env.gh_repo_owner + '/' + env.gh_repo + '/pulls/' + env.pull_number
-        const response = await fetch(requestUrl, {
-            method: 'GET',
-            headers: helpers.getRequestHeaders(env)
-        })
-        const result = await response.json()
+        const data = await getPrData(env)
 
         if (result) {
             response.code = 200
             response.message = 'success'
             response.success = true
-            response.body = result.body
-            response.status = result.status
-            response.title = result.title
+            response.body = data.body
+            response.status = data.status
+            response.title = data.title
         } else {
             response.message = `Unable to retrieve the pull request (${ env.pull_number })`
         }
@@ -82,76 +79,71 @@ export const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
 
 /**
  * Is the pull request currently open
- * @param pullRequestNumber
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrOpen = async (pullRequestNumber, env) => {
-    const pullRequestStatus = await getPrState(pullRequestNumber, env)
+export const isPrOpen = async (env) => {
+    const pullRequestStatus = await getPrState(env)
     return pullRequestStatus === "open";
 }
 
 /**
  * Is the pull request currently merged
- * @param pullRequestNumber
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrMerged = async (pullRequestNumber, env) => {
-    const mergeStatus = await getMergeState(pullRequestNumber, env)
+export const isPrMerged = async (env) => {
+    const mergeStatus = await getMergeState(env)
     return mergeStatus === 204;
 }
 
 /**
  * Is the pull request currently closed
- * @param pullRequestNumber
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrClosed = async (pullRequestNumber, env) => {
-    const pullRequestStatus = await getPrState(pullRequestNumber, env);
+export const isPrClosed = async (env) => {
+    const pullRequestStatus = await getPrState(env);
     return pullRequestStatus === "closed";
 }
 
 // private functions
+const getPrData = async (env) => {
+    const connection = getConnection(env.gh_token)
+    const { data } = await connection.rest.pulls.get({
+        owner: env.gh_repo_owner,
+        repo: env.gh_repo,
+        pull_number: env.pull_number,
+    });
+
+    return data
+}
 /**
  * Get the state of the specified pull request.
- * @param pullRequestNumber
  * @param env
  * @returns {Promise<String>}
  */
-export const getPrState = async (pullRequestNumber, env) =>{
-    if (pullRequestNumber == null) {
-        pullRequestNumber = env.pull_number;
+const getPrState = async (env) =>{
+    if (env.pull_number == null) {
+        throw Error('No PR number provided');
     }
 
-    const requestUrl = `https://api.github.com/repos/${ env.gh_repo_owner }/${ env.gh_repo }/pulls/${ pullRequestNumber }`;
-    const fetchResponse = await fetch (requestUrl, {
-        method: 'GET',
-        headers: helpers.getRequestHeaders(env)
-    });
-    const jsonResponse = await fetchResponse.json();
+    const data = await getPrData(env);
 
-    return jsonResponse.state;
+    return data.state;
 }
 
 /**
  * Get the merge status of the specified pull request.
- * @param pullRequestNumber
  * @param env
  * @returns {Promise<String>}
  */
-async function getMergeState(pullRequestNumber, env) {
-    if (pullRequestNumber == null) {
-        pullRequestNumber = env.pull_number;
+const getMergeState = async (env) => {
+    if (env.pull_number == null) {
+        throw Error('No PR number provided');
     }
 
-    const requestUrl = `https://api.github.com/repos/${ env.gh_repo_owner }/${ env.gh_repo }/pulls/${ pullRequestNumber }/merge`;
-    const fetchResponse = await fetch(requestUrl, {
-        method: 'GET',
-        headers: helpers.getRequestHeaders(env)
-    })
+    const data = await getPrData(env);
 
-    const jsonResponse = await fetchResponse.json();
-    return jsonResponse.status;
+    return data.status;
 }
