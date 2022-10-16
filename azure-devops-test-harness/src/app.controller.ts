@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AzureDevOpsService } from './azure-devops.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AzureDevOpsService) {}
 
   @Get()
   getHello(): string {
