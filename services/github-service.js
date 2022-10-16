@@ -32,6 +32,8 @@ export const getPrInfo = async (env) => {
             response.body = result.body
             response.status = result.status
             response.title = result.title
+        } else {
+            response.message = `Unable to retrieve the pull request (${ env.pull_number })`
         }
     } catch (err) {
         response.message = response.message.concat(JSON.stringify(err))
@@ -62,16 +64,18 @@ export const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
             foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g)
         }
 
-        const fullWorkItemId = foundMatches[0]
+        if(foundMatches && foundMatches.length > 0) {
+            const fullWorkItemId = foundMatches[0]
 
-        response.code = 200
-        response.message = 'success'
-        response.success = true
-        response.workItemId =  fullWorkItemId.match(/[0-9]*/g)[3]
+            response.code = 200
+            response.message = 'success'
+            response.success = true
+            response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
+        } else {
+            response.message = 'Unable to find a work item in the title or body of the pull request'
+        }
     } catch (err) {
         response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
     }
 
     return response

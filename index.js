@@ -24,9 +24,13 @@ function main() {
 const getWorkItemId = async (env) => {
     core.debug('Getting PR info')
     const prInfo = getPrInfo(env)
+    if(!prInfo.success) {
+        core.setFailed(prInfo.message)
+    }
+
     const workItemIdResponse = getWorkItemIdFromPr(prInfo.body, prInfo.title)
     if (!workItemIdResponse.success) {
-        core.setFailed(`Unable to get a work item id from the pull request title or body. ${ workItemIdResponse.message }`)
+        core.setFailed(workItemIdResponse.message)
     }
     core.debug(`Found work item id from PR${ workItemIdResponse.workItemId }`)
 
