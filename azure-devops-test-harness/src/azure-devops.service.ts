@@ -7,7 +7,6 @@ import { IFetchResponse } from './interfaces/fetch-response.interface';
 @Injectable()
 export class AzureDevOpsService {
   url = `https://dev.azure.com/${process.env.AZURE_DEVOPS_ORGANISATION}`;
-  project = process.env.AZURE_DEVOPS_PROJECT;
 
   async getAzureDevOpsClient() {
     const token = process.env.AZURE_DEVOPS_ACCESS_TOKEN;
@@ -21,8 +20,6 @@ export class AzureDevOpsService {
     const workItem = await client.getWorkItem(workItemId);
 
     return {
-      message: 'Hello World!',
-      project: this.project,
       workItemDescription: String(workItem.fields['System.Description']),
       currentState: String(workItem.fields['System.State']),
       ...workItem,

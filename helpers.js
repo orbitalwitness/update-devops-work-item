@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import core from '@actions/core'
 
 global.Headers = fetch.Headers
 
@@ -22,19 +23,23 @@ export const getRequestHeaders = (env) => {
  *     (string|string), gh_token: (*|string)}}}
  */
 export const getValuesFromPayload = (payload) => {
-    return {
+    const env = {
         action: payload.action !== undefined ? payload.action : '',
         env: {
-            organisation: process.env.ado_organisation !== undefined ? process.env.ado_organisation : '',
-            org_url: process.env.ado_organisation !== undefined ? 'https://dev.azure.com/' + process.env.ado_organisation : '',
-            ado_token: process.env.ado_token !== undefined ? process.env.ado_token : '',
-            gh_repo_owner: process.env.gh_repo_owner !== undefined ? process.env.gh_repo_owner : '',
-            gh_repo: process.env.gh_repo !== undefined ? process.env.gh_repo : '',
-            pull_number: process.env.pull_number !== undefined ? process.env.pull_number : '',
-            closed_state: process.env.closed_state !== undefined ? process.env.closedstate : 'Closed',
-            gh_token: process.env.gh_token !== undefined ? process.env.gh_token : '',
-            new_state: process.env.new_state !== undefined ? process.env.new_state : '',
-            description: process.env.description !== undefined ? process.env.description : ''
+            organisation: core.getInput('ado_organisation'),
+            org_url: `https://dev.azure.com/${ core.getInput('ado_organisation') }`,
+            ado_token: core.getInput('ado_token'),
+            gh_repo_owner: core.getInput('gh_repo_owner'),
+            gh_repo: core.getInput('gh_repo'),
+            pull_number: core.getInput('pull_number'),
+            gh_token: core.getInput('gh_token'),
+            new_state: core.getInput('new_state'),
+            description: core.getInput('description') ?? '',
+            closed_state: core.getInput('closed_state') ?? 'Closed'
         }
     }
+
+    core.debug(`env: ${JSON.stringify(env)}`);
+
+    return env
 }

@@ -1,0 +1,24 @@
+
+name: Update work item state
+
+on:
+  pull_request:
+    branches: [workflow_test]
+    types: [closed]
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    name: Test workflow
+    steps:
+      - uses: orbitalwitness/update-devops-work-item@workflow_test
+        env:
+          gh_token : '${{ secrets.GH_TOKEN }}'
+          ado_token: '${{ secrets.AZURE_DEVOPS_ACCESS_TOKEN }}'
+          organisation: 'orbitalwitness'
+          closed_state: 'Closed'
+          gh_repo_owner: 'orbitalwitness'
+          gh_repo: 'update-devops-work-item'
+          pull_number: ${{github.event.number}}
+          new_state: 'Active'
+          description: 'Automatically updated'

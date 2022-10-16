@@ -5,6 +5,34 @@ author: "Steve Doggett"
 branding:
   icon: "git-pull-request"
   color: "black"
+inputs:
+  ado_token:
+    required: true
+    description: 'Azure DevOps Personal Access Token - must have "WorkItems (Read and Write)" permission'
+  gh_token:
+    required: true
+    description: 'Github Personal Access Token'
+  organisation:
+    required: true
+    description: 'Name of the Azure DevOps organization - e.g. orbitalwitness for dev.azure.com/orbitalwitness'
+  gh_repo_owner:
+    required: true
+    description: 'Name of the owner of the Github repository - e.g. orbitalwitness for github.com/orbitalwitness'
+  gh_repo:
+    required: true
+    description: 'Name of the Github repository'
+  pull_number:
+    required: true
+    description: 'The number of the pull request'
+  new_state:
+    required: true
+    description: 'The string representing the new state of the Azure DevOps work item'
+  description:
+    required: false
+    description: 'Value to append to the System.Description field of the work item'
+  closed_state:
+    required: false
+    description: 'The string that represents the closed state of a work item in Azure DevOps. Defaults to "Closed"'
 outputs:
   id:
     description: "Work item state updated"
