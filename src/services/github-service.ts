@@ -1,6 +1,8 @@
 import { getOctokit } from '@actions/github'
+import { IEnvironment } from '../interfaces/environment.interface'
+import { IGetPrInfoResponse, IGetWorkItemIdFromPrResponse } from '../interfaces/github-service-responses.interface'
 
-export const getConnection = async (token) => {
+export const getConnection = async (token: string): Promise<any> => {
     return getOctokit(token)
 }
 /**
@@ -8,8 +10,8 @@ export const getConnection = async (token) => {
  * @param env
  * @returns {Promise<{code: number, success: boolean, message: string, body: null, title: null, status: null}>}
  */
-export const getPrInfo = async (env) => {
-    const response = {
+export const getPrInfo = async (env: IEnvironment): Promise<IGetPrInfoResponse> => {
+    const response: IGetPrInfoResponse = {
         code: 500,
         message: 'failed',
         success: false,
@@ -33,8 +35,6 @@ export const getPrInfo = async (env) => {
         }
     } catch (err) {
         response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
     }
 
     return response
@@ -46,7 +46,7 @@ export const getPrInfo = async (env) => {
  * @param fullPrTitle
  * @returns {{code: number, success: boolean, workItemId: null, message: string}}
  */
-export const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
+export const getWorkItemIdFromPr = (fullPrBody: string, fullPrTitle: string): IGetWorkItemIdFromPrResponse => {
     const response = {
         code: 500,
         message: 'failed',
@@ -63,10 +63,15 @@ export const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
         if (foundMatches && foundMatches.length > 0) {
             const fullWorkItemId = foundMatches[0]
 
-            response.code = 200
-            response.message = 'success'
-            response.success = true
-            response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
+            if(fullWorkItemId) {
+                response.code = 200
+                response.message = 'success'
+                response.success = true
+                // @ts-ignore
+                response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
+            } else {
+                response.message = 'Unable to find a work item in the title or body of the pull request'
+            }
         } else {
             response.message = 'Unable to find a work item in the title or body of the pull request'
         }
@@ -82,7 +87,7 @@ export const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrOpen = async (env) => {
+export const isPrOpen = async (env: IEnvironment): Promise<Boolean> => {
     const pullRequestStatus = await getPrState(env)
     return pullRequestStatus === 'open'
 }
@@ -92,7 +97,7 @@ export const isPrOpen = async (env) => {
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrMerged = async (env) => {
+export const isPrMerged = async (env: IEnvironment): Promise<Boolean> => {
     const mergeStatus = await getMergeState(env)
     return mergeStatus === '204'
 }
@@ -102,14 +107,14 @@ export const isPrMerged = async (env) => {
  * @param env
  * @returns {Promise<boolean>}
  */
-export const isPrClosed = async (env) => {
+export const isPrClosed = async (env: IEnvironment): Promise<Boolean> => {
     const pullRequestStatus = await getPrState(env)
     return pullRequestStatus === 'closed'
 }
 
 // private functions
-const getPrData = async (env) => {
-    const connection = getConnection(env.gh_token)
+const getPrData = async (env: IEnvironment): Promise<any> => {
+    const connection = await getConnection(env.gh_token)
     const { data } = await connection.rest.pulls.get({
         owner: env.gh_repo_owner,
         repo: env.gh_repo,
@@ -123,7 +128,7 @@ const getPrData = async (env) => {
  * @param env
  * @returns {Promise<String>}
  */
-const getPrState = async (env) => {
+const getPrState = async (env: IEnvironment): Promise<String> => {
     if (env.pull_number == null) {
         throw Error('No PR number provided')
     }
@@ -138,7 +143,7 @@ const getPrState = async (env) => {
  * @param env
  * @returns {Promise<String>}
  */
-const getMergeState = async (env) => {
+const getMergeState = async (env: IEnvironment): Promise<String> => {
     if (env.pull_number == null) {
         throw Error('No PR number provided')
     }

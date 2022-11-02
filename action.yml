@@ -16,10 +16,10 @@ inputs:
     required: true
     description: 'Name of the Azure DevOps organization - e.g. orbitalwitness for dev.azure.com/orbitalwitness'
   gh_repo_owner:
-    required: false
+    required: true
     description: 'Name of the owner of the Github repository'
   gh_repo:
-    required: false
+    required: true
     description: 'Name of the Github repository'
   pull_number:
     required: true
