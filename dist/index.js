@@ -67466,11 +67466,11 @@ const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
 
     try {
         let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g)
-        if(foundMatches && foundMatches.length > 0) {
+        if (foundMatches && foundMatches.length > 0) {
             foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g)
         }
 
-        if(foundMatches && foundMatches.length > 0) {
+        if (foundMatches && foundMatches.length > 0) {
             const fullWorkItemId = foundMatches[0]
 
             response.code = 200
@@ -67494,7 +67494,7 @@ const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
  */
 const isPrOpen = async (env) => {
     const pullRequestStatus = await getPrState(env)
-    return pullRequestStatus === "open";
+    return pullRequestStatus === 'open'
 }
 
 /**
@@ -67504,7 +67504,7 @@ const isPrOpen = async (env) => {
  */
 const isPrMerged = async (env) => {
     const mergeStatus = await getMergeState(env)
-    return mergeStatus === 204;
+    return mergeStatus === '204'
 }
 
 /**
@@ -67513,8 +67513,8 @@ const isPrMerged = async (env) => {
  * @returns {Promise<boolean>}
  */
 const isPrClosed = async (env) => {
-    const pullRequestStatus = await getPrState(env);
-    return pullRequestStatus === "closed";
+    const pullRequestStatus = await getPrState(env)
+    return pullRequestStatus === 'closed'
 }
 
 // private functions
@@ -67524,7 +67524,7 @@ const getPrData = async (env) => {
         owner: env.gh_repo_owner,
         repo: env.gh_repo,
         pull_number: env.pull_number,
-    });
+    })
 
     return data
 }
@@ -67533,14 +67533,14 @@ const getPrData = async (env) => {
  * @param env
  * @returns {Promise<String>}
  */
-const getPrState = async (env) =>{
+const getPrState = async (env) => {
     if (env.pull_number == null) {
-        throw Error('No PR number provided');
+        throw Error('No PR number provided')
     }
 
-    const data = await getPrData(env);
+    const data = await getPrData(env)
 
-    return data.state;
+    return data.state
 }
 
 /**
@@ -67550,12 +67550,12 @@ const getPrState = async (env) =>{
  */
 const getMergeState = async (env) => {
     if (env.pull_number == null) {
-        throw Error('No PR number provided');
+        throw Error('No PR number provided')
     }
 
-    const data = await getPrData(env);
+    const data = await getPrData(env)
 
-    return data.status;
+    return data.status
 }
 
 
