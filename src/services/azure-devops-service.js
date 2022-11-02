@@ -1,4 +1,7 @@
-const azureDevOpsHandler = require('azure-devops-node-api')
+import {
+    getPersonalAccessTokenHandler,
+    WebApi
+} from 'azure-devops-node-api'
 
 /**
  * Obtain a reference to the Azure Devops work item tracking API
@@ -7,8 +10,8 @@ const azureDevOpsHandler = require('azure-devops-node-api')
  */
 const getAzureDevOpsClient = async (env) => {
     const token = env.ado_token
-    const authHandler = azureDevOpsHandler.getPersonalAccessTokenHandler(token)
-    const connection = new azureDevOpsHandler.WebApi(this.url, authHandler)
+    const authHandler = getPersonalAccessTokenHandler(token)
+    const connection = new WebApi(this.url, authHandler)
     return await connection.getWorkItemTrackingApi()
 }
 
@@ -109,7 +112,7 @@ export const updateWorkItemState = async (workItemId, env) => {
             response.message = 'Success'
             response.success = true
             response.workItem = workItemResult
-            console.log(`Work Item ${ workItemId } state is updated to ${ newState }`)
+            console.log(`Work Item ${ workItemId } state is updated to ${ env.new_state }`)
         }
 
         return response

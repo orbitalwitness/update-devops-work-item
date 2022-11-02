@@ -67197,373 +67197,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 8505:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "getValuesFromPayload": () => (/* binding */ getValuesFromPayload)
-/* harmony export */ });
-const core = __nccwpck_require__(2186)
-/**
- * Create an object with the required values for use in the action.
- * @param payload
- * @returns {{action: (*|string), env: {org_url: (string|string), pull_number: (*|string), gh_repo_owner: (*|string),
- *     organisation: (string|string), gh_repo: (*|string), new_state: (*|string), ado_token: (*|string), closed_state:
- *     (string|string), gh_token: (*|string)}}}
- */
-const getValuesFromPayload = (payload) => {
-    const organisation = core.getInput('organisation', { required: true })
-    const url = `https://dev.azure.com/${ organisation }`
-
-    const env = {
-        action: payload.action !== undefined ? payload.action : '',
-        env: {
-            ado_token: core.getInput('ado_token', { required: true }),
-            gh_token: core.getInput('gh_token', { required: true }),
-            organisation,
-            org_url: url,
-            gh_repo_owner: core.getInput('gh_repo_owner', { required: false }) ?? '',
-            gh_repo: core.getInput('gh_repo', { required: false }) ?? '',
-            pull_number: core.getInput('pull_number', { required: true }),
-            new_state: core.getInput('new_state', { required: true }),
-            description: core.getInput('description') ?? '',
-            closed_state: core.getInput('closed_state') ?? 'Closed'
-        }
-    }
-
-    core.debug(`env: ${JSON.stringify(env)}`);
-
-    return env
-}
-
-
-/***/ }),
-
-/***/ 1282:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "getWorkItem": () => (/* binding */ getWorkItem),
-/* harmony export */   "updateWorkItemState": () => (/* binding */ updateWorkItemState),
-/* harmony export */   "getWorkItemState": () => (/* binding */ getWorkItemState),
-/* harmony export */   "getWorkItemDescription": () => (/* binding */ getWorkItemDescription)
-/* harmony export */ });
-const azureDevOpsHandler = __nccwpck_require__(7967)
-
-/**
- * Obtain a reference to the Azure Devops work item tracking API
- * @param env
- * @returns {Promise<IWorkItemTrackingApi>}
- */
-const getAzureDevOpsClient = async (env) => {
-    const token = env.ado_token
-    const authHandler = azureDevOpsHandler.getPersonalAccessTokenHandler(token)
-    const connection = new azureDevOpsHandler.WebApi(undefined.url, authHandler)
-    return await connection.getWorkItemTrackingApi()
-}
-
-/**
- * Get the specified work item
- * @param workItemId
- * @param env
- * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
- */
-const getWorkItem = async (workItemId, env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItem: null,
-    }
-
-    const client = await getAzureDevOpsClient(env)
-
-    try {
-        const workItem = await client.getWorkItem(workItemId)
-        if (workItem === null || workItem === undefined) {
-            response.code = 404
-            response.message = 'Error getting work item: Work item is not found'
-        } else {
-            response.code = 200
-            response.message = 'Success'
-            response.success = true
-            response.workItem = workItem
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-    }
-
-    return response
-}
-
-/**
- * Update the state of the specified work item.
- * @param workItemId
- * @param env
- * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
- */
-const updateWorkItemState = async (workItemId, env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItem: null,
-    }
-
-    const client = await getAzureDevOpsClient(env)
-    const workItemResponse = await getWorkItem(workItemId, env)
-    if (!workItemResponse.success) {
-        return workItemResponse
-    }
-
-    const workItem = workItemResponse.workItem
-    const currentDescription = getWorkItemDescription(workItem)
-    const currentState = getWorkItemState(workItem)
-
-    if (currentState === 'Closed') {
-        response.success = false
-        response.message = 'Work item is closed and cannot be updated'
-        return response
-    }
-
-    const newDescription = `${ currentDescription }<br />${ env.description }`
-
-    try {
-        const patchDocument = []
-        patchDocument.push({
-            op: 'add',
-            path: '/fields/System.State',
-            value: env.new_state,
-        })
-        patchDocument.push({
-            op: 'add',
-            path: '/fields/System.Description',
-            value: newDescription,
-        })
-
-        const workItemResult = await client.updateWorkItem(
-            [],
-            patchDocument,
-            workItemId,
-        )
-
-        // check to see if the work item is null or undefined
-        if (workItemResult === null || workItemResult === undefined) {
-            response.message =
-                'Error updating work item: Work item result is null or undefined'
-            console.log(response.message)
-        } else {
-            response.code = 200
-            response.message = 'Success'
-            response.success = true
-            response.workItem = workItemResult
-            console.log(`Work Item ${ workItemId } state is updated to ${ newState }`)
-        }
-
-        return response
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-        console.log(`Error updating work item: ${ response.message }`)
-
-        return response
-    }
-}
-
-/**
- * Return the current state of the work item.
- * @param workItem
- * @returns {string}
- */
-const getWorkItemState = (workItem) => {
-    return String(workItem.fields['System.State'])
-}
-
-/**
- * Return the current description of the work item.
- * @param workItem
- * @returns {string}
- */
-const getWorkItemDescription = (workItem) => {
-    return String(workItem.fields['System.Description'])
-}
-
-
-/***/ }),
-
-/***/ 6055:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "getConnection": () => (/* binding */ getConnection),
-/* harmony export */   "getPrInfo": () => (/* binding */ getPrInfo),
-/* harmony export */   "getWorkItemIdFromPr": () => (/* binding */ getWorkItemIdFromPr),
-/* harmony export */   "isPrOpen": () => (/* binding */ isPrOpen),
-/* harmony export */   "isPrMerged": () => (/* binding */ isPrMerged),
-/* harmony export */   "isPrClosed": () => (/* binding */ isPrClosed)
-/* harmony export */ });
-const github = __nccwpck_require__(5438)
-
-const getConnection = async (token) => {
-    return github.getOctokit(token)
-}
-/**
- * Uses the Github API to return the body, title and status of the pull request
- * @param env
- * @returns {Promise<{code: number, success: boolean, message: string, body: null, title: null, status: null}>}
- */
-const getPrInfo = async (env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        body: null,
-        status: null,
-        title: null,
-    }
-
-    try {
-        const data = await getPrData(env)
-
-        if (result) {
-            response.code = 200
-            response.message = 'success'
-            response.success = true
-            response.body = data.body
-            response.status = data.status
-            response.title = data.title
-        } else {
-            response.message = `Unable to retrieve the pull request (${ env.pull_number })`
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-    }
-
-    return response
-}
-
-/**
- * Return the work item Id that is included in the pull request body or title.
- * @param fullPrBody
- * @param fullPrTitle
- * @returns {{code: number, success: boolean, workItemId: null, message: string}}
- */
-const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItemId: null,
-    }
-
-    try {
-        let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g)
-        if (foundMatches && foundMatches.length > 0) {
-            foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g)
-        }
-
-        if (foundMatches && foundMatches.length > 0) {
-            const fullWorkItemId = foundMatches[0]
-
-            response.code = 200
-            response.message = 'success'
-            response.success = true
-            response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
-        } else {
-            response.message = 'Unable to find a work item in the title or body of the pull request'
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-    }
-
-    return response
-}
-
-/**
- * Is the pull request currently open
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrOpen = async (env) => {
-    const pullRequestStatus = await getPrState(env)
-    return pullRequestStatus === 'open'
-}
-
-/**
- * Is the pull request currently merged
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrMerged = async (env) => {
-    const mergeStatus = await getMergeState(env)
-    return mergeStatus === '204'
-}
-
-/**
- * Is the pull request currently closed
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrClosed = async (env) => {
-    const pullRequestStatus = await getPrState(env)
-    return pullRequestStatus === 'closed'
-}
-
-// private functions
-const getPrData = async (env) => {
-    const connection = getConnection(env.gh_token)
-    const { data } = await connection.rest.pulls.get({
-        owner: env.gh_repo_owner,
-        repo: env.gh_repo,
-        pull_number: env.pull_number,
-    })
-
-    return data
-}
-/**
- * Get the state of the specified pull request.
- * @param env
- * @returns {Promise<String>}
- */
-const getPrState = async (env) => {
-    if (env.pull_number == null) {
-        throw Error('No PR number provided')
-    }
-
-    const data = await getPrData(env)
-
-    return data.state
-}
-
-/**
- * Get the merge status of the specified pull request.
- * @param env
- * @returns {Promise<String>}
- */
-const getMergeState = async (env) => {
-    if (env.pull_number == null) {
-        throw Error('No PR number provided')
-    }
-
-    const data = await getPrData(env)
-
-    return data.status
-}
-
-
-/***/ }),
-
 /***/ 2877:
 /***/ ((module) => {
 
@@ -69932,23 +69565,6 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -69966,40 +69582,381 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
-const core = __nccwpck_require__(2186)
-const github = __nccwpck_require__(5438)
-const helpers = __nccwpck_require__(8505)
-const githubService = __nccwpck_require__(6055)
-const azureDevOpsService = __nccwpck_require__(1282)
+"use strict";
+// ESM COMPAT FLAG
+__nccwpck_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var github = __nccwpck_require__(5438);
+;// CONCATENATED MODULE: ./src/services/github-service.js
+
+
+const getConnection = async (token) => {
+    return (0,github.getOctokit)(token)
+}
+/**
+ * Uses the Github API to return the body, title and status of the pull request
+ * @param env
+ * @returns {Promise<{code: number, success: boolean, message: string, body: null, title: null, status: null}>}
+ */
+const getPrInfo = async (env) => {
+    const response = {
+        code: 500,
+        message: 'failed',
+        success: false,
+        body: null,
+        status: null,
+        title: null,
+    }
+
+    try {
+        const data = await getPrData(env)
+
+        if (data) {
+            response.code = 200
+            response.message = 'success'
+            response.success = true
+            response.body = data.body
+            response.status = data.status
+            response.title = data.title
+        } else {
+            response.message = `Unable to retrieve the pull request (${ env.pull_number })`
+        }
+    } catch (err) {
+        response.message = response.message.concat(JSON.stringify(err))
+        response.workItem = null
+        response.success = false
+    }
+
+    return response
+}
+
+/**
+ * Return the work item Id that is included in the pull request body or title.
+ * @param fullPrBody
+ * @param fullPrTitle
+ * @returns {{code: number, success: boolean, workItemId: null, message: string}}
+ */
+const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
+    const response = {
+        code: 500,
+        message: 'failed',
+        success: false,
+        workItemId: null,
+    }
+
+    try {
+        let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g)
+        if (foundMatches && foundMatches.length > 0) {
+            foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g)
+        }
+
+        if (foundMatches && foundMatches.length > 0) {
+            const fullWorkItemId = foundMatches[0]
+
+            response.code = 200
+            response.message = 'success'
+            response.success = true
+            response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
+        } else {
+            response.message = 'Unable to find a work item in the title or body of the pull request'
+        }
+    } catch (err) {
+        response.message = response.message.concat(JSON.stringify(err))
+    }
+
+    return response
+}
+
+/**
+ * Is the pull request currently open
+ * @param env
+ * @returns {Promise<boolean>}
+ */
+const isPrOpen = async (env) => {
+    const pullRequestStatus = await getPrState(env)
+    return pullRequestStatus === 'open'
+}
+
+/**
+ * Is the pull request currently merged
+ * @param env
+ * @returns {Promise<boolean>}
+ */
+const isPrMerged = async (env) => {
+    const mergeStatus = await getMergeState(env)
+    return mergeStatus === '204'
+}
+
+/**
+ * Is the pull request currently closed
+ * @param env
+ * @returns {Promise<boolean>}
+ */
+const isPrClosed = async (env) => {
+    const pullRequestStatus = await getPrState(env)
+    return pullRequestStatus === 'closed'
+}
+
+// private functions
+const getPrData = async (env) => {
+    const connection = getConnection(env.gh_token)
+    const { data } = await connection.rest.pulls.get({
+        owner: env.gh_repo_owner,
+        repo: env.gh_repo,
+        pull_number: env.pull_number,
+    })
+
+    return data
+}
+/**
+ * Get the state of the specified pull request.
+ * @param env
+ * @returns {Promise<String>}
+ */
+const getPrState = async (env) => {
+    if (env.pull_number == null) {
+        throw Error('No PR number provided')
+    }
+
+    const data = await getPrData(env)
+
+    return data.state
+}
+
+/**
+ * Get the merge status of the specified pull request.
+ * @param env
+ * @returns {Promise<String>}
+ */
+const getMergeState = async (env) => {
+    if (env.pull_number == null) {
+        throw Error('No PR number provided')
+    }
+
+    const data = await getPrData(env)
+
+    return data.status
+}
+
+// EXTERNAL MODULE: ./node_modules/azure-devops-node-api/WebApi.js
+var WebApi = __nccwpck_require__(7967);
+;// CONCATENATED MODULE: ./src/services/azure-devops-service.js
+
+
+/**
+ * Obtain a reference to the Azure Devops work item tracking API
+ * @param env
+ * @returns {Promise<IWorkItemTrackingApi>}
+ */
+const getAzureDevOpsClient = async (env) => {
+    const token = env.ado_token
+    const authHandler = (0,WebApi.getPersonalAccessTokenHandler)(token)
+    const connection = new WebApi.WebApi(undefined.url, authHandler)
+    return await connection.getWorkItemTrackingApi()
+}
+
+/**
+ * Get the specified work item
+ * @param workItemId
+ * @param env
+ * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
+ */
+const getWorkItem = async (workItemId, env) => {
+    const response = {
+        code: 500,
+        message: 'failed',
+        success: false,
+        workItem: null,
+    }
+
+    const client = await getAzureDevOpsClient(env)
+
+    try {
+        const workItem = await client.getWorkItem(workItemId)
+        if (workItem === null || workItem === undefined) {
+            response.code = 404
+            response.message = 'Error getting work item: Work item is not found'
+        } else {
+            response.code = 200
+            response.message = 'Success'
+            response.success = true
+            response.workItem = workItem
+        }
+    } catch (err) {
+        response.message = response.message.concat(JSON.stringify(err))
+        response.workItem = null
+        response.success = false
+    }
+
+    return response
+}
+
+/**
+ * Update the state of the specified work item.
+ * @param workItemId
+ * @param env
+ * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
+ */
+const updateWorkItemState = async (workItemId, env) => {
+    const response = {
+        code: 500,
+        message: 'failed',
+        success: false,
+        workItem: null,
+    }
+
+    const client = await getAzureDevOpsClient(env)
+    const workItemResponse = await getWorkItem(workItemId, env)
+    if (!workItemResponse.success) {
+        return workItemResponse
+    }
+
+    const workItem = workItemResponse.workItem
+    const currentDescription = getWorkItemDescription(workItem)
+    const currentState = getWorkItemState(workItem)
+
+    if (currentState === 'Closed') {
+        response.success = false
+        response.message = 'Work item is closed and cannot be updated'
+        return response
+    }
+
+    const newDescription = `${ currentDescription }<br />${ env.description }`
+
+    try {
+        const patchDocument = []
+        patchDocument.push({
+            op: 'add',
+            path: '/fields/System.State',
+            value: env.new_state,
+        })
+        patchDocument.push({
+            op: 'add',
+            path: '/fields/System.Description',
+            value: newDescription,
+        })
+
+        const workItemResult = await client.updateWorkItem(
+            [],
+            patchDocument,
+            workItemId,
+        )
+
+        // check to see if the work item is null or undefined
+        if (workItemResult === null || workItemResult === undefined) {
+            response.message =
+                'Error updating work item: Work item result is null or undefined'
+            console.log(response.message)
+        } else {
+            response.code = 200
+            response.message = 'Success'
+            response.success = true
+            response.workItem = workItemResult
+            console.log(`Work Item ${ workItemId } state is updated to ${ env.new_state }`)
+        }
+
+        return response
+    } catch (err) {
+        response.message = response.message.concat(JSON.stringify(err))
+        response.workItem = null
+        response.success = false
+        console.log(`Error updating work item: ${ response.message }`)
+
+        return response
+    }
+}
+
+/**
+ * Return the current state of the work item.
+ * @param workItem
+ * @returns {string}
+ */
+const getWorkItemState = (workItem) => {
+    return String(workItem.fields['System.State'])
+}
+
+/**
+ * Return the current description of the work item.
+ * @param workItem
+ * @returns {string}
+ */
+const getWorkItemDescription = (workItem) => {
+    return String(workItem.fields['System.Description'])
+}
+
+;// CONCATENATED MODULE: ./src/helpers.js
+
+/**
+ * Create an object with the required values for use in the action.
+ * @param payload
+ * @returns {{action: (*|string), env: {org_url: (string|string), pull_number: (*|string), gh_repo_owner: (*|string),
+ *     organisation: (string|string), gh_repo: (*|string), new_state: (*|string), ado_token: (*|string), closed_state:
+ *     (string|string), gh_token: (*|string)}}}
+ */
+const getValuesFromPayload = (payload) => {
+    const organisation = (0,core.getInput)('organisation', { required: true })
+    const url = `https://dev.azure.com/${ organisation }`
+
+    const env = {
+        action: payload.action !== undefined ? payload.action : '',
+        env: {
+            ado_token: (0,core.getInput)('ado_token', { required: true }),
+            gh_token: (0,core.getInput)('gh_token', { required: true }),
+            organisation,
+            org_url: url,
+            gh_repo_owner: (0,core.getInput)('gh_repo_owner', { required: false }) ?? '',
+            gh_repo: (0,core.getInput)('gh_repo', { required: false }) ?? '',
+            pull_number: (0,core.getInput)('pull_number', { required: true }),
+            new_state: (0,core.getInput)('new_state', { required: true }),
+            description: (0,core.getInput)('description') ?? '',
+            closed_state: (0,core.getInput)('closed_state') ?? 'Closed'
+        }
+    }
+
+    ;(0,core.debug)(`env: ${JSON.stringify(env)}`);
+
+    return env
+}
+
+;// CONCATENATED MODULE: ./src/main.js
+
+
+
+
+
+
 
 const getWorkItemId = async (env) => {
-    core.debug('Getting PR info')
-    const prInfo = await githubService.getPrInfo(env)
+    (0,core.debug)('Getting PR info')
+    const prInfo = await getPrInfo(env)
     if (!prInfo.success) {
-        core.setFailed(prInfo.message)
+        (0,core.setFailed)(prInfo.message)
     }
 
-    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title)
+    const workItemIdResponse = getWorkItemIdFromPr(prInfo.body, prInfo.title)
     if (!workItemIdResponse.success) {
-        core.setFailed(workItemIdResponse.message)
+        (0,core.setFailed)(workItemIdResponse.message)
     }
-    core.debug(`Found work item id from PR${ workItemIdResponse.workItemId }`)
+    (0,core.debug)(`Found work item id from PR${ workItemIdResponse.workItemId }`)
 
-    const updateWorkItemStateResponse = await azureDevOpsService.updateWorkItemState(workItemIdResponse.workItemId, env)
+    const updateWorkItemStateResponse = await updateWorkItemState(workItemIdResponse.workItemId, env)
     if (!updateWorkItemStateResponse.success) {
-        core.setFailed(updateWorkItemStateResponse.message)
+        (0,core.setFailed)(updateWorkItemStateResponse.message)
     }
-    core.debug(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
+    (0,core.debug)(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
 }
 
 const main = async () => {
     try {
-        const vm = helpers.getValuesFromPayload(github.context.payload)
+        const vm = getValuesFromPayload(github.context.payload)
         await getWorkItemId(vm.env)
     } catch (error) {
-        core.setFailed(error.message)
+        (0,core.setFailed)(error.message)
     }
 
 }

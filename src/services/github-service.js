@@ -1,7 +1,7 @@
-const github = require('@actions/github')
+import { getOctokit } from '@actions/github'
 
 export const getConnection = async (token) => {
-    return github.getOctokit(token)
+    return getOctokit(token)
 }
 /**
  * Uses the Github API to return the body, title and status of the pull request
@@ -21,7 +21,7 @@ export const getPrInfo = async (env) => {
     try {
         const data = await getPrData(env)
 
-        if (result) {
+        if (data) {
             response.code = 200
             response.message = 'success'
             response.success = true

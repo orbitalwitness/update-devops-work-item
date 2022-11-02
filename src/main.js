@@ -1,35 +1,39 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
-const helpers = require('./helpers')
-const githubService = require('./services/github-service')
-const azureDevOpsService = require('./services/azure-devops-service')
+import {
+    debug,
+    setFailed
+} from '@actions/core'
+import { context } from '@actions/github'
+
+import { getPrInfo, getWorkItemIdFromPr } from './services/github-service'
+import { updateWorkItemState} from './services/azure-devops-service'
+import { getValuesFromPayload } from './helpers'
 
 const getWorkItemId = async (env) => {
-    core.debug('Getting PR info')
-    const prInfo = await githubService.getPrInfo(env)
+    debug('Getting PR info')
+    const prInfo = await getPrInfo(env)
     if (!prInfo.success) {
-        core.setFailed(prInfo.message)
+        setFailed(prInfo.message)
     }
 
-    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title)
+    const workItemIdResponse = getWorkItemIdFromPr(prInfo.body, prInfo.title)
     if (!workItemIdResponse.success) {
-        core.setFailed(workItemIdResponse.message)
+        setFailed(workItemIdResponse.message)
     }
-    core.debug(`Found work item id from PR${ workItemIdResponse.workItemId }`)
+    debug(`Found work item id from PR${ workItemIdResponse.workItemId }`)
 
-    const updateWorkItemStateResponse = await azureDevOpsService.updateWorkItemState(workItemIdResponse.workItemId, env)
+    const updateWorkItemStateResponse = await updateWorkItemState(workItemIdResponse.workItemId, env)
     if (!updateWorkItemStateResponse.success) {
-        core.setFailed(updateWorkItemStateResponse.message)
+        setFailed(updateWorkItemStateResponse.message)
     }
-    core.debug(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
+    debug(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
 }
 
 const main = async () => {
     try {
-        const vm = helpers.getValuesFromPayload(github.context.payload)
+        const vm = getValuesFromPayload(context.payload)
         await getWorkItemId(vm.env)
     } catch (error) {
-        core.setFailed(error.message)
+        setFailed(error.message)
     }
 
 }
