@@ -58,16 +58,19 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Environment Variables
+Need to add a `.env` file to the root of the `azure-devops-test-harness` project. The file should contain the following values:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```js
+ORGANISATION=abc
+ORG_URL=https://dev.azure.com/abc
+ADO_TOKEN=def
+PROJECT=xyz
+```
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+* ORGANISATION: the organisation is the Azure DevOps name used within the url to access your project: 
+  * http://dev.azure.com/orbitalwitness = orbitalwitness is the organisation.
+* ORG_URL: the complete url to access the Azure DevOps organisation
+* ADO_TOKEN: a personal access token (PAT) generated for the Azure DevOps user. More details can be found in the [docs](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
+* PROJECT: the project name is the Azure DevOps project. It can also be found in the url after the organisation name:
+  * https://dev.azure.com/orbitalwitness/orbitalwitness%20web%20application/ = orbital%20witness%20application is the project name.
