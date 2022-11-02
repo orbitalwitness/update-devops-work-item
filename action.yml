@@ -16,10 +16,10 @@ inputs:
     required: true
     description: 'Name of the Azure DevOps organization - e.g. orbitalwitness for dev.azure.com/orbitalwitness'
   gh_repo_owner:
-    required: true
-    description: 'Name of the owner of the Github repository - e.g. orbitalwitness for github.com/orbitalwitness'
+    required: false
+    description: 'Name of the owner of the Github repository
   gh_repo:
-    required: true
+    required: false
     description: 'Name of the Github repository'
   pull_number:
     required: true
@@ -38,4 +38,4 @@ outputs:
     description: "Work item state updated"
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"

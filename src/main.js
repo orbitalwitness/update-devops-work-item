@@ -2,22 +2,12 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const helpers = require('./helpers')
 const githubService = require('./services/github-service')
-const azureDevOpsService =  require('./services/azure-devops-service')
-
-const run = async () => {
-    const vm = helpers.getValuesFromPayload(github.context.payload)
-    if (vm.action !== 'closed') {
-        await getWorkItemId(vm.env)
-    } else {
-        core.setFailed('Pull request closed')
-    }
-
-}
+const azureDevOpsService = require('./services/azure-devops-service')
 
 const getWorkItemId = async (env) => {
     core.debug('Getting PR info')
-    const prInfo = githubService.getPrInfo(env)
-    if(!prInfo.success) {
+    const prInfo = await githubService.getPrInfo(env)
+    if (!prInfo.success) {
         core.setFailed(prInfo.message)
     }
 
@@ -34,4 +24,15 @@ const getWorkItemId = async (env) => {
     core.debug(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
 }
 
-run()
+const main = async () => {
+    try {
+        const vm = helpers.getValuesFromPayload(github.context.payload)
+        await getWorkItemId(vm.env)
+    } catch (error) {
+        core.setFailed(error.message)
+    }
+
+}
+
+// Call the main function to run the action
+main()

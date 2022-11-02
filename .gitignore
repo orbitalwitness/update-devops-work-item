@@ -261,7 +261,7 @@ __pycache__/
 # Prettier
 .prettierrc.js
 
-/**/dist/*
+/azure-devops-test-harness/dist/*
 
 .env
-/azure-devops-test-harness/node_modules
+node_modules
