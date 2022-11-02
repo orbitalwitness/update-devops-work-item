@@ -33,9 +33,6 @@ inputs:
   closed_state:
     required: false
     description: 'The string that represents the closed state of a work item in Azure DevOps. Defaults to "Closed"'
-outputs:
-  id:
-    description: "Work item state updated"
 runs:
   using: "node16"
   main: "dist/index.js"
