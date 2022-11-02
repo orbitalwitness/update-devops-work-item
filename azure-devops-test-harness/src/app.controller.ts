@@ -1,4 +1,4 @@
-import { Controller, Get, Patch } from '@nestjs/common';
+import { Controller, Get, Patch, Query } from '@nestjs/common'
 import { AzureDevOpsService } from './azure-devops.service';
 
 @Controller()
@@ -6,12 +6,13 @@ export class AppController {
   constructor(private readonly appService: AzureDevOpsService) {}
 
   @Get('/get-work-item')
-  getWorkItem(): object {
-    return this.appService.getWorkItem(4577);
+  getWorkItem(@Query('id') id: number): object {
+    return this.appService.getWorkItem(id);
   }
 
   @Patch('/update-work-item-state')
-  updateWorkItemState(): object {
-    return this.appService.updateWorkItemState(4577, 'Active');
+  updateWorkItemState(@Query('id') id: number,
+                      @Query('state') state: string): object {
+    return this.appService.updateWorkItemState(id, state);
   }
 }

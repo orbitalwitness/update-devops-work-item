@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import * as azureDevOpsHandler from 'azure-devops-node-api';
 import { IWorkItemTrackingApi } from 'azure-devops-node-api/WorkItemTrackingApi';
 import { WorkItem } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
+
 import { IFetchResponse } from './interfaces/fetch-response.interface';
 
 @Injectable()
 export class AzureDevOpsService {
-  url = `https://dev.azure.com/${process.env.AZURE_DEVOPS_ORGANISATION}`;
+  url = `https://dev.azure.com/${this.configService.get<string>('ORGANISATION')}`;
+
+  constructor(private readonly configService: ConfigService) {}
 
   async getAzureDevOpsClient() {
-    const token = process.env.AZURE_DEVOPS_ACCESS_TOKEN;
+    const token = this.configService.get<string>('ADO_TOKEN');
     const authHandler = azureDevOpsHandler.getPersonalAccessTokenHandler(token);
     const connection = new azureDevOpsHandler.WebApi(this.url, authHandler);
     return await connection.getWorkItemTrackingApi();
