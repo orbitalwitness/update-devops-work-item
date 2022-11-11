@@ -3,6 +3,7 @@
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
@@ -59,7 +60,9 @@ $ npm run test:cov
 ```
 
 ## Environment Variables
-Need to add a `.env` file to the root of the `azure-devops-test-harness` project. The file should contain the following values:
+
+Need to add a `.env` file to the root of the `azure-devops-test-harness` project. The file should contain the following
+values:
 
 ```js
 ORGANISATION=abc
@@ -68,9 +71,12 @@ ADO_TOKEN=def
 PROJECT=xyz
 ```
 
-* ORGANISATION: the organisation is the Azure DevOps name used within the url to access your project: 
-  * http://dev.azure.com/orbitalwitness = orbitalwitness is the organisation.
+* ORGANISATION: the organisation is the Azure DevOps name used within the url to access your project:
+    * http://dev.azure.com/orbitalwitness = orbitalwitness is the organisation.
 * ORG_URL: the complete url to access the Azure DevOps organisation
-* ADO_TOKEN: a personal access token (PAT) generated for the Azure DevOps user. More details can be found in the [docs](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
+* ADO_TOKEN: a personal access token (PAT) generated for the Azure DevOps user. More details can be found in
+  the [docs](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows)
+  .
 * PROJECT: the project name is the Azure DevOps project. It can also be found in the url after the organisation name:
-  * https://dev.azure.com/orbitalwitness/orbitalwitness%20web%20application/ = orbital%20witness%20application is the project name.
+    * https://dev.azure.com/orbitalwitness/orbitalwitness%20web%20application/ = orbital%20witness%20application is the
+      project name.

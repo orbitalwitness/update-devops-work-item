@@ -474,7 +474,7 @@ exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(7147));
 const os = __importStar(__nccwpck_require__(2037));
-const uuid_1 = __nccwpck_require__(1270);
+const uuid_1 = __nccwpck_require__(5840);
 const utils_1 = __nccwpck_require__(5278);
 function issueFileCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
@@ -2233,7 +2233,7 @@ exports.Octokit = Octokit;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var isPlainObject = __nccwpck_require__(3217);
+var isPlainObject = __nccwpck_require__(3287);
 var universalUserAgent = __nccwpck_require__(5030);
 
 function lowercaseKeys(object) {
@@ -4171,7 +4171,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var endpoint = __nccwpck_require__(9440);
 var universalUserAgent = __nccwpck_require__(5030);
-var isPlainObject = __nccwpck_require__(3217);
+var isPlainObject = __nccwpck_require__(3287);
 var nodeFetch = _interopDefault(__nccwpck_require__(1768));
 var requestError = __nccwpck_require__(537);
 
@@ -61536,6 +61536,52 @@ module.exports = bind.call(Function.call, Object.prototype.hasOwnProperty);
 
 /***/ }),
 
+/***/ 3287:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+/*!
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isPlainObject(o) {
+  var ctor,prot;
+
+  if (isObject(o) === false) return false;
+
+  // If has modified constructor
+  ctor = o.constructor;
+  if (ctor === undefined) return true;
+
+  // If has modified prototype
+  prot = ctor.prototype;
+  if (isObject(prot) === false) return false;
+
+  // If constructor does not have an Object-specific method
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
+    return false;
+  }
+
+  // Most likely a plain Object
+  return true;
+}
+
+exports.isPlainObject = isPlainObject;
+
+
+/***/ }),
+
 /***/ 504:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -65196,6 +65242,652 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
+/***/ 5840:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "v1", ({
+  enumerable: true,
+  get: function () {
+    return _v.default;
+  }
+}));
+Object.defineProperty(exports, "v3", ({
+  enumerable: true,
+  get: function () {
+    return _v2.default;
+  }
+}));
+Object.defineProperty(exports, "v4", ({
+  enumerable: true,
+  get: function () {
+    return _v3.default;
+  }
+}));
+Object.defineProperty(exports, "v5", ({
+  enumerable: true,
+  get: function () {
+    return _v4.default;
+  }
+}));
+Object.defineProperty(exports, "NIL", ({
+  enumerable: true,
+  get: function () {
+    return _nil.default;
+  }
+}));
+Object.defineProperty(exports, "version", ({
+  enumerable: true,
+  get: function () {
+    return _version.default;
+  }
+}));
+Object.defineProperty(exports, "validate", ({
+  enumerable: true,
+  get: function () {
+    return _validate.default;
+  }
+}));
+Object.defineProperty(exports, "stringify", ({
+  enumerable: true,
+  get: function () {
+    return _stringify.default;
+  }
+}));
+Object.defineProperty(exports, "parse", ({
+  enumerable: true,
+  get: function () {
+    return _parse.default;
+  }
+}));
+
+var _v = _interopRequireDefault(__nccwpck_require__(8628));
+
+var _v2 = _interopRequireDefault(__nccwpck_require__(6409));
+
+var _v3 = _interopRequireDefault(__nccwpck_require__(5122));
+
+var _v4 = _interopRequireDefault(__nccwpck_require__(9120));
+
+var _nil = _interopRequireDefault(__nccwpck_require__(5332));
+
+var _version = _interopRequireDefault(__nccwpck_require__(1595));
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+var _parse = _interopRequireDefault(__nccwpck_require__(2746));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
+/***/ 4569:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function md5(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('md5').update(bytes).digest();
+}
+
+var _default = md5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 5332:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = '00000000-0000-0000-0000-000000000000';
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 2746:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function parse(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
+
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
+
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
+
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
+}
+
+var _default = parse;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 814:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 807:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = rng;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
+
+let poolPtr = rnds8Pool.length;
+
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    _crypto.default.randomFillSync(rnds8Pool);
+
+    poolPtr = 0;
+  }
+
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
+}
+
+/***/ }),
+
+/***/ 5274:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('sha1').update(bytes).digest();
+}
+
+var _default = sha1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8950:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+var _default = stringify;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8628:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _rng = _interopRequireDefault(__nccwpck_require__(807));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+let _nodeId;
+
+let _clockseq; // Previous uuid creation time
+
+
+let _lastMSecs = 0;
+let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+
+function v1(options, buf, offset) {
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || _rng.default)();
+
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+    }
+
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+
+
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf || (0, _stringify.default)(b);
+}
+
+var _default = v1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6409:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(5998));
+
+var _md = _interopRequireDefault(__nccwpck_require__(4569));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v3 = (0, _v.default)('v3', 0x30, _md.default);
+var _default = v3;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 5998:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = _default;
+exports.URL = exports.DNS = void 0;
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+var _parse = _interopRequireDefault(__nccwpck_require__(2746));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  const bytes = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+
+  return bytes;
+}
+
+const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+exports.DNS = DNS;
+const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+exports.URL = URL;
+
+function _default(name, version, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
+    }
+
+    if (typeof namespace === 'string') {
+      namespace = (0, _parse.default)(namespace);
+    }
+
+    if (namespace.length !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    } // Compute hash of namespace and value, Per 4.3
+    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
+    // hashfunc([...namespace, ... value])`
+
+
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
+      }
+
+      return buf;
+    }
+
+    return (0, _stringify.default)(bytes);
+  } // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name; // eslint-disable-next-line no-empty
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+}
+
+/***/ }),
+
+/***/ 5122:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _rng = _interopRequireDefault(__nccwpck_require__(807));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function v4(options, buf, offset) {
+  options = options || {};
+
+  const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return (0, _stringify.default)(rnds);
+}
+
+var _default = v4;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 9120:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(5998));
+
+var _sha = _interopRequireDefault(__nccwpck_require__(5274));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v5 = (0, _v.default)('v5', 0x50, _sha.default);
+var _default = v5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6900:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _regex = _interopRequireDefault(__nccwpck_require__(814));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(uuid) {
+  return typeof uuid === 'string' && _regex.default.test(uuid);
+}
+
+var _default = validate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 1595:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function version(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  return parseInt(uuid.substr(14, 1), 16);
+}
+
+var _default = version;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ 4886:
 /***/ ((module) => {
 
@@ -67197,26 +67889,446 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 399:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core_1 = __nccwpck_require__(2186);
+const github_1 = __nccwpck_require__(5438);
+const azure_devops_service_1 = __nccwpck_require__(1108);
+const config_service_1 = __nccwpck_require__(487);
+const github_service_1 = __nccwpck_require__(4991);
+const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, core_1.debug)("Getting PR info");
+    const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
+    const githubService = new github_service_1.GithubService(configService);
+    const prInfo = yield githubService.getPrInfo();
+    if (!prInfo.success) {
+        (0, core_1.setFailed)(prInfo.message);
+        return;
+    }
+    if (!prInfo.body) {
+        (0, core_1.setFailed)("Unable to retrieve the body of the PR");
+        return;
+    }
+    if (!prInfo.title) {
+        (0, core_1.setFailed)("Unable to retrieve the title of the PR");
+        return;
+    }
+    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title);
+    if (!workItemIdResponse || !workItemIdResponse.success) {
+        (0, core_1.setFailed)(workItemIdResponse.message);
+        return;
+    }
+    (0, core_1.debug)(`Found work item id from PR${workItemIdResponse.workItemId}`);
+    const newState = configService.get("newState");
+    const updateWorkItemStateResponse = yield azureDevOpsService.updateWorkItemState(Number(workItemIdResponse.workItemId), newState);
+    if (!updateWorkItemStateResponse.success) {
+        (0, core_1.setFailed)(updateWorkItemStateResponse.message);
+        return;
+    }
+    (0, core_1.debug)(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+});
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const configService = new config_service_1.ConfigService(github_1.context.payload);
+        yield getWorkItemId(configService);
+    }
+    catch (error) {
+        (0, core_1.setFailed)(error.message);
+    }
+});
+// Call the main function to run the action
+main();
+
+
+/***/ }),
+
+/***/ 1108:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AzureDevOpsService = void 0;
+const azure_devops_node_api_1 = __nccwpck_require__(7967);
+class AzureDevOpsService {
+    constructor(configService) {
+        this.configService = configService;
+        this.url = `https://dev.azure.com/${this.configService.get("organisation")}`;
+    }
+    /**
+     * Get the specified work item
+     * @param workItemId
+     * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
+     */
+    getWorkItem(workItemId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = {
+                code: 500,
+                message: "failed",
+                success: false,
+                workItem: null,
+            };
+            const client = yield this.getAzureDevOpsClient();
+            try {
+                const workItem = yield client.getWorkItem(workItemId);
+                if (workItem === null || workItem === undefined) {
+                    response.code = 404;
+                    response.message = "Error getting work item: Work item is not found";
+                }
+                else {
+                    response.code = 200;
+                    response.message = "Success";
+                    response.success = true;
+                    // @ts-ignore
+                    response.workItem = workItem;
+                }
+            }
+            catch (err) {
+                response.message = response.message.concat(JSON.stringify(err));
+                response.workItem = null;
+                response.success = false;
+            }
+            return response;
+        });
+    }
+    /**
+     * Update the state of the specified work item.
+     * @param workItemId
+     * @param newState
+     * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
+     */
+    updateWorkItemState(workItemId, newState) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = {
+                code: 500,
+                message: "failed",
+                success: false,
+                workItem: null,
+            };
+            const client = yield this.getAzureDevOpsClient();
+            const workItemResponse = yield this.getWorkItem(workItemId);
+            if (!workItemResponse.success) {
+                return workItemResponse;
+            }
+            const workItem = workItemResponse.workItem;
+            const currentDescription = this.getWorkItemDescription(workItem);
+            const currentState = this.getWorkItemState(workItem);
+            if (currentState === "Closed") {
+                response.success = false;
+                response.message = "Work item is closed and cannot be updated";
+                return response;
+            }
+            const newDescription = `${currentDescription}<br />${this.configService.get("description")}`;
+            try {
+                const patchDocument = [];
+                patchDocument.push({
+                    op: "add",
+                    path: "/fields/System.State",
+                    value: newState,
+                });
+                patchDocument.push({
+                    op: "add",
+                    path: "/fields/System.Description",
+                    value: newDescription,
+                });
+                const workItemResult = yield client.updateWorkItem([], patchDocument, workItemId);
+                // check to see if the work item is null or undefined
+                if (workItemResult === null || workItemResult === undefined) {
+                    response.message =
+                        "Error updating work item: Work item result is null or undefined";
+                    console.log(response.message);
+                }
+                else {
+                    response.code = 200;
+                    response.message = "Success";
+                    response.success = true;
+                    // @ts-ignore
+                    response.workItem = workItemResult;
+                    console.log(`Work Item ${workItemId} state is updated to ${newState}`);
+                }
+                return response;
+            }
+            catch (err) {
+                response.message = response.message.concat(JSON.stringify(err));
+                response.workItem = null;
+                response.success = false;
+                console.log(`Error updating work item: ${response.message}`);
+                return response;
+            }
+        });
+    }
+    /**
+     * Return the current state of the work item.
+     * @param workItem
+     * @returns {string}
+     */
+    getWorkItemState(workItem) {
+        return String(workItem.fields["System.State"]);
+    }
+    /**
+     * Return the current description of the work item.
+     * @param workItem
+     * @returns {string}
+     */
+    getWorkItemDescription(workItem) {
+        return String(workItem.fields["System.Description"]);
+    }
+    /**
+     * Obtain a reference to the Azure Devops work item tracking API
+     * @returns {Promise<IWorkItemTrackingApi>}
+     */
+    getAzureDevOpsClient() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = this.configService.get("adoToken");
+            const authHandler = (0, azure_devops_node_api_1.getPersonalAccessTokenHandler)(token);
+            const connection = new azure_devops_node_api_1.WebApi(this.url, authHandler);
+            return yield connection.getWorkItemTrackingApi();
+        });
+    }
+}
+exports.AzureDevOpsService = AzureDevOpsService;
+
+
+/***/ }),
+
+/***/ 487:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ConfigService = void 0;
+const core_1 = __nccwpck_require__(2186);
+class ConfigService {
+    constructor(githubContext) {
+        var _a, _b, _c, _d;
+        const organisation = (0, core_1.getInput)("organisation", { required: true });
+        const url = `https://dev.azure.com/${organisation}`;
+        this.env = {
+            action: githubContext.action !== undefined ? githubContext.action : "",
+            adoToken: (0, core_1.getInput)("ado_token", { required: true }),
+            ghToken: (0, core_1.getInput)("gh_token", { required: true }),
+            organisation,
+            orgUrl: url,
+            ghRepoOwner: (_a = (0, core_1.getInput)("gh_repo_owner", { required: false })) !== null && _a !== void 0 ? _a : "",
+            ghRepo: (_b = (0, core_1.getInput)("gh_repo", { required: false })) !== null && _b !== void 0 ? _b : "",
+            pullNumber: Number((0, core_1.getInput)("pull_number", { required: true })),
+            newState: (0, core_1.getInput)("new_state", { required: true }),
+            description: (_c = (0, core_1.getInput)("description")) !== null && _c !== void 0 ? _c : "",
+            closedState: (_d = (0, core_1.getInput)("closed_state")) !== null && _d !== void 0 ? _d : "Closed",
+        };
+    }
+    get(name) {
+        return this.env[name];
+    }
+}
+exports.ConfigService = ConfigService;
+
+
+/***/ }),
+
+/***/ 4991:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GithubService = void 0;
+const github_1 = __nccwpck_require__(5438);
+class GithubService {
+    constructor(configService) {
+        this.configService = configService;
+    }
+    /**
+     * Uses the Github API to return the body, title and status of the pull request
+     * @returns {Promise<{code: number, success: boolean, message: string, body: null, title: null, status: null}>}
+     */
+    getPrInfo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = {
+                code: 500,
+                message: "failed",
+                success: false,
+                body: null,
+                status: null,
+                title: null,
+            };
+            try {
+                const data = yield this.getPrData();
+                if (data) {
+                    response.code = 200;
+                    response.message = "success";
+                    response.success = true;
+                    response.body = data.body;
+                    response.status = data.status;
+                    response.title = data.title;
+                }
+                else {
+                    response.message = `Unable to retrieve the pull request (${this.configService.get("pullNumber")})`;
+                }
+            }
+            catch (err) {
+                response.message = response.message.concat(JSON.stringify(err));
+            }
+            return response;
+        });
+    }
+    /**
+     * Return the work item Id that is included in the pull request body or title.
+     * @param fullPrBody
+     * @param fullPrTitle
+     * @returns {{code: number, success: boolean, workItemId: null, message: string}}
+     */
+    getWorkItemIdFromPr(fullPrBody, fullPrTitle) {
+        const response = {
+            code: 500,
+            message: "failed",
+            success: false,
+            workItemId: null,
+        };
+        try {
+            let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g);
+            if (foundMatches && foundMatches.length > 0) {
+                foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g);
+            }
+            if (foundMatches && foundMatches.length > 0) {
+                const fullWorkItemId = foundMatches[0];
+                if (fullWorkItemId) {
+                    response.code = 200;
+                    response.message = "success";
+                    response.success = true;
+                    // @ts-ignore
+                    response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3];
+                }
+                else {
+                    response.message =
+                        "Unable to find a work item in the title or body of the pull request";
+                }
+            }
+            else {
+                response.message =
+                    "Unable to find a work item in the title or body of the pull request";
+            }
+        }
+        catch (err) {
+            response.message = response.message.concat(JSON.stringify(err));
+        }
+        return response;
+    }
+    /**
+     * Is the pull request currently open
+     * @returns {Promise<boolean>}
+     */
+    isPrOpen() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pullRequestStatus = yield this.getPrState();
+            return pullRequestStatus === "open";
+        });
+    }
+    /**
+     * Is the pull request currently merged
+     * @returns {Promise<boolean>}
+     */
+    isPrMerged() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mergeStatus = yield this.getMergeState();
+            return mergeStatus === "204";
+        });
+    }
+    /**
+     * Is the pull request currently closed
+     * @returns {Promise<boolean>}
+     */
+    isPrClosed() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pullRequestStatus = yield this.getPrState();
+            return pullRequestStatus === "closed";
+        });
+    }
+    getConnection() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = this.configService.get("ghToken");
+            return (0, github_1.getOctokit)(token);
+        });
+    }
+    getPrData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const connection = yield this.getConnection();
+            const { data } = yield connection.rest.pulls.get({
+                owner: this.configService.get("ghRepoOwner"),
+                repo: this.configService.get("ghRepo"),
+                pull_number: this.configService.get("pullNumber"),
+            });
+            return data;
+        });
+    }
+    /**
+     * Get the state of the specified pull request.
+     * @returns {Promise<String>}
+     */
+    getPrState() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.configService.get("pullNumber") == null) {
+                throw Error("No PR number provided");
+            }
+            const data = yield this.getPrData();
+            return data.state;
+        });
+    }
+    /**
+     * Get the merge status of the specified pull request.
+     * @returns {Promise<String>}
+     */
+    getMergeState() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.configService.get("pullNumber") == null) {
+                throw Error("No PR number provided");
+            }
+            const data = yield this.getPrData();
+            return data.status;
+        });
+    }
+}
+exports.GithubService = GithubService;
+
+
+/***/ }),
+
 /***/ 2877:
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
-
-
-/***/ }),
-
-/***/ 3217:
-/***/ ((module) => {
-
-module.exports = eval("require")("is-plain-object");
-
-
-/***/ }),
-
-/***/ 1270:
-/***/ ((module) => {
-
-module.exports = eval("require")("uuid");
 
 
 /***/ }),
@@ -69565,408 +70677,18 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-// ESM COMPAT FLAG
-__nccwpck_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
-var github = __nccwpck_require__(5438);
-;// CONCATENATED MODULE: ./src/services/github-service.js
-
-
-const getConnection = async (token) => {
-    return (0,github.getOctokit)(token)
-}
-/**
- * Uses the Github API to return the body, title and status of the pull request
- * @param env
- * @returns {Promise<{code: number, success: boolean, message: string, body: null, title: null, status: null}>}
- */
-const getPrInfo = async (env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        body: null,
-        status: null,
-        title: null,
-    }
-
-    try {
-        const data = await getPrData(env)
-
-        if (data) {
-            response.code = 200
-            response.message = 'success'
-            response.success = true
-            response.body = data.body
-            response.status = data.status
-            response.title = data.title
-        } else {
-            response.message = `Unable to retrieve the pull request (${ env.pull_number })`
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-    }
-
-    return response
-}
-
-/**
- * Return the work item Id that is included in the pull request body or title.
- * @param fullPrBody
- * @param fullPrTitle
- * @returns {{code: number, success: boolean, workItemId: null, message: string}}
- */
-const getWorkItemIdFromPr = (fullPrBody, fullPrTitle) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItemId: null,
-    }
-
-    try {
-        let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g)
-        if (foundMatches && foundMatches.length > 0) {
-            foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g)
-        }
-
-        if (foundMatches && foundMatches.length > 0) {
-            const fullWorkItemId = foundMatches[0]
-
-            response.code = 200
-            response.message = 'success'
-            response.success = true
-            response.workItemId = fullWorkItemId.match(/[0-9]*/g)[3]
-        } else {
-            response.message = 'Unable to find a work item in the title or body of the pull request'
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-    }
-
-    return response
-}
-
-/**
- * Is the pull request currently open
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrOpen = async (env) => {
-    const pullRequestStatus = await getPrState(env)
-    return pullRequestStatus === 'open'
-}
-
-/**
- * Is the pull request currently merged
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrMerged = async (env) => {
-    const mergeStatus = await getMergeState(env)
-    return mergeStatus === '204'
-}
-
-/**
- * Is the pull request currently closed
- * @param env
- * @returns {Promise<boolean>}
- */
-const isPrClosed = async (env) => {
-    const pullRequestStatus = await getPrState(env)
-    return pullRequestStatus === 'closed'
-}
-
-// private functions
-const getPrData = async (env) => {
-    const connection = getConnection(env.gh_token)
-    const { data } = await connection.rest.pulls.get({
-        owner: env.gh_repo_owner,
-        repo: env.gh_repo,
-        pull_number: env.pull_number,
-    })
-
-    return data
-}
-/**
- * Get the state of the specified pull request.
- * @param env
- * @returns {Promise<String>}
- */
-const getPrState = async (env) => {
-    if (env.pull_number == null) {
-        throw Error('No PR number provided')
-    }
-
-    const data = await getPrData(env)
-
-    return data.state
-}
-
-/**
- * Get the merge status of the specified pull request.
- * @param env
- * @returns {Promise<String>}
- */
-const getMergeState = async (env) => {
-    if (env.pull_number == null) {
-        throw Error('No PR number provided')
-    }
-
-    const data = await getPrData(env)
-
-    return data.status
-}
-
-// EXTERNAL MODULE: ./node_modules/azure-devops-node-api/WebApi.js
-var WebApi = __nccwpck_require__(7967);
-;// CONCATENATED MODULE: ./src/services/azure-devops-service.js
-
-
-/**
- * Obtain a reference to the Azure Devops work item tracking API
- * @param env
- * @returns {Promise<IWorkItemTrackingApi>}
- */
-const getAzureDevOpsClient = async (env) => {
-    const token = env.ado_token
-    const authHandler = (0,WebApi.getPersonalAccessTokenHandler)(token)
-    const connection = new WebApi.WebApi(undefined.url, authHandler)
-    return await connection.getWorkItemTrackingApi()
-}
-
-/**
- * Get the specified work item
- * @param workItemId
- * @param env
- * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
- */
-const getWorkItem = async (workItemId, env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItem: null,
-    }
-
-    const client = await getAzureDevOpsClient(env)
-
-    try {
-        const workItem = await client.getWorkItem(workItemId)
-        if (workItem === null || workItem === undefined) {
-            response.code = 404
-            response.message = 'Error getting work item: Work item is not found'
-        } else {
-            response.code = 200
-            response.message = 'Success'
-            response.success = true
-            response.workItem = workItem
-        }
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-    }
-
-    return response
-}
-
-/**
- * Update the state of the specified work item.
- * @param workItemId
- * @param env
- * @returns {Promise<{code: number, success: boolean, workItem: null, message: string}>}
- */
-const updateWorkItemState = async (workItemId, env) => {
-    const response = {
-        code: 500,
-        message: 'failed',
-        success: false,
-        workItem: null,
-    }
-
-    const client = await getAzureDevOpsClient(env)
-    const workItemResponse = await getWorkItem(workItemId, env)
-    if (!workItemResponse.success) {
-        return workItemResponse
-    }
-
-    const workItem = workItemResponse.workItem
-    const currentDescription = getWorkItemDescription(workItem)
-    const currentState = getWorkItemState(workItem)
-
-    if (currentState === 'Closed') {
-        response.success = false
-        response.message = 'Work item is closed and cannot be updated'
-        return response
-    }
-
-    const newDescription = `${ currentDescription }<br />${ env.description }`
-
-    try {
-        const patchDocument = []
-        patchDocument.push({
-            op: 'add',
-            path: '/fields/System.State',
-            value: env.new_state,
-        })
-        patchDocument.push({
-            op: 'add',
-            path: '/fields/System.Description',
-            value: newDescription,
-        })
-
-        const workItemResult = await client.updateWorkItem(
-            [],
-            patchDocument,
-            workItemId,
-        )
-
-        // check to see if the work item is null or undefined
-        if (workItemResult === null || workItemResult === undefined) {
-            response.message =
-                'Error updating work item: Work item result is null or undefined'
-            console.log(response.message)
-        } else {
-            response.code = 200
-            response.message = 'Success'
-            response.success = true
-            response.workItem = workItemResult
-            console.log(`Work Item ${ workItemId } state is updated to ${ env.new_state }`)
-        }
-
-        return response
-    } catch (err) {
-        response.message = response.message.concat(JSON.stringify(err))
-        response.workItem = null
-        response.success = false
-        console.log(`Error updating work item: ${ response.message }`)
-
-        return response
-    }
-}
-
-/**
- * Return the current state of the work item.
- * @param workItem
- * @returns {string}
- */
-const getWorkItemState = (workItem) => {
-    return String(workItem.fields['System.State'])
-}
-
-/**
- * Return the current description of the work item.
- * @param workItem
- * @returns {string}
- */
-const getWorkItemDescription = (workItem) => {
-    return String(workItem.fields['System.Description'])
-}
-
-;// CONCATENATED MODULE: ./src/helpers.js
-
-/**
- * Create an object with the required values for use in the action.
- * @param payload
- * @returns {{action: (*|string), env: {org_url: (string|string), pull_number: (*|string), gh_repo_owner: (*|string),
- *     organisation: (string|string), gh_repo: (*|string), new_state: (*|string), ado_token: (*|string), closed_state:
- *     (string|string), gh_token: (*|string)}}}
- */
-const getValuesFromPayload = (payload) => {
-    const organisation = (0,core.getInput)('organisation', { required: true })
-    const url = `https://dev.azure.com/${ organisation }`
-
-    const env = {
-        action: payload.action !== undefined ? payload.action : '',
-        env: {
-            ado_token: (0,core.getInput)('ado_token', { required: true }),
-            gh_token: (0,core.getInput)('gh_token', { required: true }),
-            organisation,
-            org_url: url,
-            gh_repo_owner: (0,core.getInput)('gh_repo_owner', { required: false }) ?? '',
-            gh_repo: (0,core.getInput)('gh_repo', { required: false }) ?? '',
-            pull_number: (0,core.getInput)('pull_number', { required: true }),
-            new_state: (0,core.getInput)('new_state', { required: true }),
-            description: (0,core.getInput)('description') ?? '',
-            closed_state: (0,core.getInput)('closed_state') ?? 'Closed'
-        }
-    }
-
-    ;(0,core.debug)(`env: ${JSON.stringify(env)}`);
-
-    return env
-}
-
-;// CONCATENATED MODULE: ./src/main.js
-
-
-
-
-
-
-
-const getWorkItemId = async (env) => {
-    (0,core.debug)('Getting PR info')
-    const prInfo = await getPrInfo(env)
-    if (!prInfo.success) {
-        (0,core.setFailed)(prInfo.message)
-    }
-
-    const workItemIdResponse = getWorkItemIdFromPr(prInfo.body, prInfo.title)
-    if (!workItemIdResponse.success) {
-        (0,core.setFailed)(workItemIdResponse.message)
-    }
-    (0,core.debug)(`Found work item id from PR${ workItemIdResponse.workItemId }`)
-
-    const updateWorkItemStateResponse = await updateWorkItemState(workItemIdResponse.workItemId, env)
-    if (!updateWorkItemStateResponse.success) {
-        (0,core.setFailed)(updateWorkItemStateResponse.message)
-    }
-    (0,core.debug)(`Updated work item ${ workItemIdResponse.workItemId } to state ${ env.new_state }`)
-}
-
-const main = async () => {
-    try {
-        const vm = getValuesFromPayload(github.context.payload)
-        await getWorkItemId(vm.env)
-    } catch (error) {
-        (0,core.setFailed)(error.message)
-    }
-
-}
-
-// Call the main function to run the action
-main()
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(399);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as azureDevOpsHandler from 'azure-devops-node-api';
 import { IWorkItemTrackingApi } from 'azure-devops-node-api/WorkItemTrackingApi';
 import { WorkItem } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
@@ -8,7 +8,9 @@ import { IFetchResponse } from './interfaces/fetch-response.interface';
 
 @Injectable()
 export class AzureDevOpsService {
-  url = `https://dev.azure.com/${this.configService.get<string>('ORGANISATION')}`;
+  url = `https://dev.azure.com/${this.configService.get<string>(
+    'ORGANISATION',
+  )}`;
 
   constructor(private readonly configService: ConfigService) {}
 
@@ -33,7 +35,7 @@ export class AzureDevOpsService {
   async updateWorkItemState(
     workItemId: number,
     newState: string,
-  ): Promise<object> {
+  ): Promise<any> {
     const response: IFetchResponse = {
       code: 500,
       message: 'failed',

@@ -1,4 +1,3 @@
-
 name: "Update DevOps Work Item State"
 description: "This action will update the state of a work item state in Boards within Azure DevOps"
 author: "Steve Doggett"

@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Query } from '@nestjs/common'
+import { Controller, Get, Patch, Query } from '@nestjs/common';
 import { AzureDevOpsService } from './azure-devops.service';
 
 @Controller()
@@ -11,8 +11,10 @@ export class AppController {
   }
 
   @Patch('/update-work-item-state')
-  updateWorkItemState(@Query('id') id: number,
-                      @Query('state') state: string): object {
+  updateWorkItemState(
+    @Query('id') id: number,
+    @Query('state') state: string,
+  ): object {
     return this.appService.updateWorkItemState(id, state);
   }
 }

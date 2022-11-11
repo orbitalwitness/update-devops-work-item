@@ -1,10 +1,9 @@
-
 name: Update work item state
 
 on:
   pull_request:
-    branches: [workflow_test]
-    types: [closed]
+    branches: [ workflow_test ]
+    types: [ closed ]
 
 jobs:
   alert:
@@ -13,7 +12,7 @@ jobs:
     steps:
       - uses: orbitalwitness/update-devops-work-item@workflow_test
         env:
-          gh_token : '${{ secrets.GH_TOKEN }}'
+          gh_token: '${{ secrets.GH_TOKEN }}'
           ado_token: '${{ secrets.AZURE_DEVOPS_ACCESS_TOKEN }}'
           organisation: 'orbitalwitness'
           closed_state: 'Closed'
