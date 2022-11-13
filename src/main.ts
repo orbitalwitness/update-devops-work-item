@@ -57,7 +57,7 @@ const getWorkItemId = async (configService: IConfigService) => {
 
 const main = async () => {
   try {
-    const configService = new ConfigService(context.payload);
+    const configService = new ConfigService(context.payload, process.env);
     await getWorkItemId(configService);
   } catch (error: any) {
     setFailed(error.message);

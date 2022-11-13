@@ -47,7 +47,7 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const configService = new config_service_1.ConfigService(github_1.context.payload);
+        const configService = new config_service_1.ConfigService(github_1.context.payload, process.env);
         yield getWorkItemId(configService);
     }
     catch (error) {

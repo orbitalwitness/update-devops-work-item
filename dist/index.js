@@ -67942,7 +67942,7 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const configService = new config_service_1.ConfigService(github_1.context.payload);
+        const configService = new config_service_1.ConfigService(github_1.context.payload, process.env);
         yield getWorkItemId(configService);
     }
     catch (error) {
@@ -68114,30 +68114,29 @@ exports.AzureDevOpsService = AzureDevOpsService;
 /***/ }),
 
 /***/ 487:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ConfigService = void 0;
-const core_1 = __nccwpck_require__(2186);
 class ConfigService {
-    constructor(githubContext) {
-        var _a, _b, _c, _d;
-        const organisation = (0, core_1.getInput)("organisation", { required: true });
+    constructor(githubContext, env) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        const organisation = (_a = env.organisation) !== null && _a !== void 0 ? _a : "";
         const url = `https://dev.azure.com/${organisation}`;
         this.env = {
             action: githubContext.action !== undefined ? githubContext.action : "",
-            adoToken: (0, core_1.getInput)("ado_token", { required: true }),
-            ghToken: (0, core_1.getInput)("gh_token", { required: true }),
+            adoToken: (_b = env.ado_token) !== null && _b !== void 0 ? _b : "",
+            ghToken: (_c = env.gh_token) !== null && _c !== void 0 ? _c : "",
             organisation,
             orgUrl: url,
-            ghRepoOwner: (_a = (0, core_1.getInput)("gh_repo_owner", { required: false })) !== null && _a !== void 0 ? _a : "",
-            ghRepo: (_b = (0, core_1.getInput)("gh_repo", { required: false })) !== null && _b !== void 0 ? _b : "",
-            pullNumber: Number((0, core_1.getInput)("pull_number", { required: true })),
-            newState: (0, core_1.getInput)("new_state", { required: true }),
-            description: (_c = (0, core_1.getInput)("description")) !== null && _c !== void 0 ? _c : "",
-            closedState: (_d = (0, core_1.getInput)("closed_state")) !== null && _d !== void 0 ? _d : "Closed",
+            ghRepoOwner: (_d = env.gh_repo_owner) !== null && _d !== void 0 ? _d : "",
+            ghRepo: (_e = env.gh_repo) !== null && _e !== void 0 ? _e : "",
+            pullNumber: Number((_f = env.pull_number) !== null && _f !== void 0 ? _f : 0),
+            newState: (_g = env.new_state) !== null && _g !== void 0 ? _g : "",
+            description: (_h = env.description) !== null && _h !== void 0 ? _h : "",
+            closedState: (_j = env.closed_state) !== null && _j !== void 0 ? _j : "Closed",
         };
     }
     get(name) {
