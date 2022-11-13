@@ -5,22 +5,22 @@ import { IEnvironment } from "../interfaces/environment.interface";
 export class ConfigService implements IConfigService {
   private readonly env: IEnvironment;
 
-  constructor(githubContext: any) {
-    const organisation = getInput("organisation", { required: true });
+  constructor(githubContext: any, env: any) {
+    const organisation = env.organisation ?? '';
     const url = `https://dev.azure.com/${organisation}`;
 
     this.env = {
       action: githubContext.action !== undefined ? githubContext.action : "",
-      adoToken: getInput("ado_token", { required: true }),
-      ghToken: getInput("gh_token", { required: true }),
+      adoToken: env.ado_token ?? '',
+      ghToken: env.gh_token ?? '',
       organisation,
       orgUrl: url,
-      ghRepoOwner: getInput("gh_repo_owner", { required: false }) ?? "",
-      ghRepo: getInput("gh_repo", { required: false }) ?? "",
-      pullNumber: Number(getInput("pull_number", { required: true })),
-      newState: getInput("new_state", { required: true }),
-      description: getInput("description") ?? "",
-      closedState: getInput("closed_state") ?? "Closed",
+      ghRepoOwner: env.gh_repo_owner ?? "",
+      ghRepo: env.gh_repo ?? "",
+      pullNumber: Number(env.pull_number ?? 0),
+      newState: env.new_state ?? '',
+      description: env.description ?? "",
+      closedState: env.closed_state ?? "Closed",
     };
   }
 
