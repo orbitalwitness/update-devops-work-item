@@ -24,7 +24,8 @@
     "dependencies": {
         "@actions/core": "1.10.0",
         "@actions/github": "5.1.1",
-        "azure-devops-node-api": "11.2.0"
+        "azure-devops-node-api": "11.2.0",
+        "yarn": "^1.22.19"
     },
     "devDependencies": {
         "@types/node": "16.11.7",
@@ -37,5 +38,6 @@
         "js-yaml": "4.1.0",
         "prettier": "2.7.1",
         "typescript": "4.8.4"
-    }
+    },
+    "packageManager": "yarn@3.3.0"
 }

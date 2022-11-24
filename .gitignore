@@ -264,4 +264,4 @@ __pycache__/
 /azure-devops-test-harness/dist/*
 
 .env
-/node_modules/**/*
+/node_modules/
