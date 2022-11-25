@@ -68040,7 +68040,9 @@ class AzureDevOpsService {
                 return response;
             }
             const timestamp = new Date().toISOString();
-            const newDescription = `${currentDescription}<br />${timestamp.substring(0, timestamp.length - 5)}: ${this.configService.get("description")}`;
+            const newDescription = `${currentDescription}<br />${timestamp
+                .substring(0, timestamp.length - 5)
+                .replace("T", " ")}: ${this.configService.get("description")}`;
             try {
                 const patchDocument = [];
                 patchDocument.push({
