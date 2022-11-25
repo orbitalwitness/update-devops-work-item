@@ -66,9 +66,19 @@ export class GithubService {
     };
 
     try {
+      console.log(`body: "${fullPrBody}"`);
+      console.log(`title: "${fullPrTitle}"`);
       let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g);
+      console.log(
+        "matches from body: ",
+        foundMatches !== null ? foundMatches.toString() : "no matches"
+      );
       if (foundMatches && foundMatches.length > 0) {
         foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g);
+        console.log(
+          "matches from title: ",
+          foundMatches !== null ? foundMatches.toString() : "no matches"
+        );
       }
 
       if (foundMatches && foundMatches.length > 0) {

@@ -25,8 +25,8 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
-    const prBody = (_a = prInfo['body']) !== null && _a !== void 0 ? _a : '';
-    const prTitle = prInfo['title'];
+    const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
+    const prTitle = prInfo["title"];
     if (!prTitle) {
         (0, core_1.setFailed)("Unable to retrieve the title of the PR");
         return;
