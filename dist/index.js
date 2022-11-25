@@ -67914,6 +67914,7 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
+    console.log("prInfo: ", JSON.stringify(prInfo));
     if (!prInfo.success) {
         (0, core_1.setFailed)(prInfo.message);
         return;
@@ -68129,8 +68130,6 @@ class ConfigService {
             console.log("Missing gh_token value");
         if (!env.organisation)
             console.log("Missing organisation value");
-        if (!env.project)
-            console.log("Missing project value");
         const organisation = (_a = env["organisation"]) !== null && _a !== void 0 ? _a : "";
         const url = `https://dev.azure.com/${organisation}`;
         this.env = {
@@ -68297,6 +68296,7 @@ class GithubService {
                 repo: this.configService.get("ghRepo"),
                 pull_number: this.configService.get("pullNumber"),
             });
+            console.log("PR data ", JSON.stringify(data));
             return data;
         });
     }
