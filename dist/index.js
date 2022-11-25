@@ -68294,7 +68294,6 @@ class GithubService {
                 repo: this.configService.get("ghRepo"),
                 pull_number: this.configService.get("pullNumber"),
             });
-            console.log("PR data ", JSON.stringify(data));
             return data;
         });
     }
