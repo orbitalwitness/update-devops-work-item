@@ -83,9 +83,10 @@ export class AzureDevOpsService {
     }
 
     const timestamp = new Date().toISOString();
-    const newDescription = `${currentDescription}<br />${timestamp}: ${this.configService.get<string>(
-      "description"
-    )}`;
+    const newDescription = `${currentDescription}<br />${timestamp.substring(
+      0,
+      timestamp.length - 5
+    )}: ${this.configService.get<string>("description")}`;
 
     try {
       const patchDocument = [];
