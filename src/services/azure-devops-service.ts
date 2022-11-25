@@ -82,7 +82,8 @@ export class AzureDevOpsService {
       return response;
     }
 
-    const newDescription = `${currentDescription}<br />${this.configService.get<string>(
+    const timestamp = new Date().toISOString();
+    const newDescription = `${currentDescription}<br />${timestamp}: ${this.configService.get<string>(
       "description"
     )}`;
 

@@ -79,7 +79,8 @@ class AzureDevOpsService {
                 response.message = "Work item is closed and cannot be updated";
                 return response;
             }
-            const newDescription = `${currentDescription}<br />${this.configService.get("description")}`;
+            const timestamp = new Date().toISOString();
+            const newDescription = `${currentDescription}<br />${timestamp}: ${this.configService.get("description")}`;
             try {
                 const patchDocument = [];
                 patchDocument.push({
