@@ -44,9 +44,14 @@ const getWorkItemId = async (configService: IConfigService) => {
     setFailed(updateWorkItemStateResponse.message);
     return;
   }
-  console.log(
-    `Updated work item ${workItemIdResponse.workItemId} to state ${newState}`
-  );
+
+  if (!updateWorkItemStateResponse?.message) {
+    console.log(
+      `Updated work item ${workItemIdResponse.workItemId} to state ${newState}`
+    );
+  } else {
+    console.log(updateWorkItemStateResponse.message);
+  }
 };
 
 const main = async () => {

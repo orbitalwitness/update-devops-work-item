@@ -42,7 +42,12 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(updateWorkItemStateResponse.message);
         return;
     }
-    console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    if (!(updateWorkItemStateResponse === null || updateWorkItemStateResponse === void 0 ? void 0 : updateWorkItemStateResponse.message)) {
+        console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    }
+    else {
+        console.log(updateWorkItemStateResponse.message);
+    }
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

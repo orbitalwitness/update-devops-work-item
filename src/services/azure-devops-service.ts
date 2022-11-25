@@ -77,8 +77,16 @@ export class AzureDevOpsService {
     const currentState = this.getWorkItemState(workItem);
 
     if (currentState === "Closed") {
-      response.success = false;
+      // Don't want to fail because of this
+      response.success = true;
       response.message = "Work item is closed and cannot be updated";
+      return response;
+    }
+
+    if (currentState === newState) {
+      // Don't want to fail because of this
+      response.success = true;
+      response.message = `Work item is already in the ${newState} state`;
       return response;
     }
 
@@ -113,7 +121,7 @@ export class AzureDevOpsService {
         console.log(response.message);
       } else {
         response.code = 200;
-        response.message = "Success";
+        response.message = "";
         response.success = true;
         // @ts-ignore
         response.workItem = workItemResult;

@@ -67937,7 +67937,12 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(updateWorkItemStateResponse.message);
         return;
     }
-    console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    if (!(updateWorkItemStateResponse === null || updateWorkItemStateResponse === void 0 ? void 0 : updateWorkItemStateResponse.message)) {
+        console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    }
+    else {
+        console.log(updateWorkItemStateResponse.message);
+    }
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -68035,8 +68040,15 @@ class AzureDevOpsService {
             const currentDescription = this.getWorkItemDescription(workItem);
             const currentState = this.getWorkItemState(workItem);
             if (currentState === "Closed") {
-                response.success = false;
+                // Don't want to fail because of this
+                response.success = true;
                 response.message = "Work item is closed and cannot be updated";
+                return response;
+            }
+            if (currentState === newState) {
+                // Don't want to fail because of this
+                response.success = true;
+                response.message = `Work item is already in the ${newState} state`;
                 return response;
             }
             const timestamp = new Date().toISOString();
@@ -68064,7 +68076,7 @@ class AzureDevOpsService {
                 }
                 else {
                     response.code = 200;
-                    response.message = "Success";
+                    response.message = "";
                     response.success = true;
                     // @ts-ignore
                     response.workItem = workItemResult;

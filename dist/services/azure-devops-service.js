@@ -75,12 +75,21 @@ class AzureDevOpsService {
             const currentDescription = this.getWorkItemDescription(workItem);
             const currentState = this.getWorkItemState(workItem);
             if (currentState === "Closed") {
-                response.success = false;
+                // Don't want to fail because of this
+                response.success = true;
                 response.message = "Work item is closed and cannot be updated";
                 return response;
             }
+            if (currentState === newState) {
+                // Don't want to fail because of this
+                response.success = true;
+                response.message = `Work item is already in the ${newState} state`;
+                return response;
+            }
             const timestamp = new Date().toISOString();
-            const newDescription = `${currentDescription}<br />${timestamp.substring(0, timestamp.length - 5).replace('T', ' ')}: ${this.configService.get("description")}`;
+            const newDescription = `${currentDescription}<br />${timestamp
+                .substring(0, timestamp.length - 5)
+                .replace("T", " ")}: ${this.configService.get("description")}`;
             try {
                 const patchDocument = [];
                 patchDocument.push({
@@ -102,7 +111,7 @@ class AzureDevOpsService {
                 }
                 else {
                     response.code = 200;
-                    response.message = "Success";
+                    response.message = "";
                     response.success = true;
                     // @ts-ignore
                     response.workItem = workItemResult;
