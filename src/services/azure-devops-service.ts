@@ -10,9 +10,7 @@ export class AzureDevOpsService {
 
   constructor(configService: IConfigService) {
     this.configService = configService;
-    this.url = `https://dev.azure.com/${this.configService.get<string>(
-      "organisation"
-    )}`;
+    this.url = this.configService.get<string>("adoUrl");
   }
 
   /**

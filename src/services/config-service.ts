@@ -9,15 +9,15 @@ export class ConfigService implements IConfigService {
     if (!env.gh_token) console.log("Missing gh_token value");
     if (!env.organisation) console.log("Missing organisation value");
 
-    const organisation = env["organisation"] ?? "";
-    const url = `https://dev.azure.com/${organisation}`;
+    const adoOrganisation = env["ado_organisation"] ?? "";
+    const adoUrl = `https://dev.azure.com/${adoOrganisation}`;
 
     this.env = {
       action: githubContext.action !== undefined ? githubContext.action : "",
       adoToken: env["ado_token"] ?? "",
       ghToken: env["gh_token"] ?? "",
-      organisation,
-      orgUrl: url,
+      adoOrganisation,
+      adoUrl,
       ghRepoOwner: env["gh_repo_owner"] ?? "",
       ghRepo: env["gh_repo"] ?? "",
       pullNumber: Number(env["pull_number"] ?? 0),

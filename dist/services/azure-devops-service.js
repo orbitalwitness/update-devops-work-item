@@ -14,7 +14,7 @@ const azure_devops_node_api_1 = require("azure-devops-node-api");
 class AzureDevOpsService {
     constructor(configService) {
         this.configService = configService;
-        this.url = `https://dev.azure.com/${this.configService.get("organisation")}`;
+        this.url = this.configService.get("adoUrl");
     }
     /**
      * Get the specified work item

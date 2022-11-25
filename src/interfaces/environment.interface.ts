@@ -2,8 +2,8 @@
   action: string;
   adoToken: string;
   ghToken: string;
-  organisation: string;
-  orgUrl: string;
+  adoOrganisation: string;
+  adoUrl: string;
   ghRepoOwner: string;
   ghRepo: string;
   pullNumber: number;
