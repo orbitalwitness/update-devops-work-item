@@ -67910,6 +67910,7 @@ const azure_devops_service_1 = __nccwpck_require__(1108);
 const config_service_1 = __nccwpck_require__(487);
 const github_service_1 = __nccwpck_require__(4991);
 const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     (0, core_1.debug)("Getting PR info");
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
@@ -67919,15 +67920,13 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
-    if (!prInfo.body) {
-        (0, core_1.setFailed)("Unable to retrieve the body of the PR");
-        return;
-    }
-    if (!prInfo.title) {
+    const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
+    const prTitle = prInfo["title"];
+    if (!prTitle) {
         (0, core_1.setFailed)("Unable to retrieve the title of the PR");
         return;
     }
-    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title);
+    const workItemIdResponse = githubService.getWorkItemIdFromPr(prBody, prTitle);
     if (!workItemIdResponse || !workItemIdResponse.success) {
         (0, core_1.setFailed)(workItemIdResponse.message);
         return;

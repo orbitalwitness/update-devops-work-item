@@ -15,24 +15,23 @@ const azure_devops_service_1 = require("./services/azure-devops-service");
 const config_service_1 = require("./services/config-service");
 const github_service_1 = require("./services/github-service");
 const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     (0, core_1.debug)("Getting PR info");
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
-    console.log('prInfo: ', JSON.stringify(prInfo));
+    console.log("prInfo: ", JSON.stringify(prInfo));
     if (!prInfo.success) {
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
-    if (!prInfo.body) {
-        (0, core_1.setFailed)("Unable to retrieve the body of the PR");
-        return;
-    }
-    if (!prInfo.title) {
+    const prBody = (_a = prInfo['body']) !== null && _a !== void 0 ? _a : '';
+    const prTitle = prInfo['title'];
+    if (!prTitle) {
         (0, core_1.setFailed)("Unable to retrieve the title of the PR");
         return;
     }
-    const workItemIdResponse = githubService.getWorkItemIdFromPr(prInfo.body, prInfo.title);
+    const workItemIdResponse = githubService.getWorkItemIdFromPr(prBody, prTitle);
     if (!workItemIdResponse || !workItemIdResponse.success) {
         (0, core_1.setFailed)(workItemIdResponse.message);
         return;

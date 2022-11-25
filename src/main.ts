@@ -20,20 +20,14 @@ const getWorkItemId = async (configService: IConfigService) => {
     return;
   }
 
-  if (!prInfo.body) {
-    setFailed("Unable to retrieve the body of the PR");
-    return;
-  }
-
-  if (!prInfo.title) {
+  const prBody = prInfo["body"] ?? "";
+  const prTitle = prInfo["title"];
+  if (!prTitle) {
     setFailed("Unable to retrieve the title of the PR");
     return;
   }
 
-  const workItemIdResponse = githubService.getWorkItemIdFromPr(
-    prInfo.body,
-    prInfo.title
-  );
+  const workItemIdResponse = githubService.getWorkItemIdFromPr(prBody, prTitle);
   if (!workItemIdResponse || !workItemIdResponse.success) {
     setFailed(workItemIdResponse.message);
     return;
