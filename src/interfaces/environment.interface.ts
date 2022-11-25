@@ -3,6 +3,7 @@
   adoToken: string;
   ghToken: string;
   organisation: string;
+  project: string;
   orgUrl: string;
   ghRepoOwner: string;
   ghRepo: string;

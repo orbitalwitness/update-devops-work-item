@@ -5,6 +5,11 @@ export class ConfigService implements IConfigService {
   private readonly env: IEnvironment;
 
   constructor(githubContext: any, env: any) {
+    if (!env.ado_token) console.log("Missing ado_token value");
+    if (!env.gh_token) console.log("Missing gh_token value");
+    if (!env.organisation) console.log("Missing organisation value");
+    if (!env.project) console.log("Missing project value");
+
     const organisation = env.organisation ?? "";
     const url = `https://dev.azure.com/${organisation}`;
 
@@ -14,6 +19,7 @@ export class ConfigService implements IConfigService {
       ghToken: env.gh_token ?? "",
       organisation,
       orgUrl: url,
+      project: env.project ?? "",
       ghRepoOwner: env.gh_repo_owner ?? "",
       ghRepo: env.gh_repo ?? "",
       pullNumber: Number(env.pull_number ?? 0),

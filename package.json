@@ -9,7 +9,7 @@
         "format-check": "prettier --check **/*.ts",
         "lint": "eslint src/**/*.ts",
         "package": "ncc build --source-map --license licenses.txt",
-        "all": "yarn run build && yarn run format && yarn run package"
+        "all": "npm run build && npm run format && npm run package"
     },
     "repository": {
         "type": "git",
