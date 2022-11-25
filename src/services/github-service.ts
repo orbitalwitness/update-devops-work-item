@@ -73,7 +73,7 @@ export class GithubService {
         "matches from body: ",
         foundMatches !== null ? foundMatches.toString() : "no matches"
       );
-      if (foundMatches && foundMatches.length > 0) {
+      if (foundMatches === null || foundMatches.length === 0) {
         foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g);
         console.log(
           "matches from title: ",
