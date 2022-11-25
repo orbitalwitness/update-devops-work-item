@@ -134,6 +134,7 @@ export class GithubService {
       repo: this.configService.get<string>("ghRepo"),
       pull_number: this.configService.get<string>("pullNumber"),
     });
+    console.log("PR data ", JSON.stringify(data));
 
     return data;
   }

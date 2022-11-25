@@ -8,7 +8,6 @@ export class ConfigService implements IConfigService {
     if (!env.ado_token) console.log("Missing ado_token value");
     if (!env.gh_token) console.log("Missing gh_token value");
     if (!env.organisation) console.log("Missing organisation value");
-    if (!env.project) console.log("Missing project value");
 
     const organisation = env["organisation"] ?? "";
     const url = `https://dev.azure.com/${organisation}`;

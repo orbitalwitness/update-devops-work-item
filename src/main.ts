@@ -14,6 +14,7 @@ const getWorkItemId = async (configService: IConfigService) => {
   const githubService = new GithubService(configService);
 
   const prInfo: IGetPrInfoResponse = await githubService.getPrInfo();
+  console.log("prInfo: ", JSON.stringify(prInfo));
   if (!prInfo.success) {
     setFailed(prInfo.message);
     return;
