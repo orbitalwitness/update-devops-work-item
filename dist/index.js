@@ -67911,11 +67911,10 @@ const config_service_1 = __nccwpck_require__(487);
 const github_service_1 = __nccwpck_require__(4991);
 const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    (0, core_1.debug)("Getting PR info");
+    console.log("Getting PR info");
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
-    console.log("prInfo: ", JSON.stringify(prInfo));
     if (!prInfo.success) {
         (0, core_1.setFailed)(prInfo.message);
         return;
@@ -67931,14 +67930,14 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(workItemIdResponse.message);
         return;
     }
-    (0, core_1.debug)(`Found work item id from PR${workItemIdResponse.workItemId}`);
+    console.log(`Found work item id from PR${workItemIdResponse.workItemId}`);
     const newState = configService.get("newState");
     const updateWorkItemStateResponse = yield azureDevOpsService.updateWorkItemState(Number(workItemIdResponse.workItemId), newState);
     if (!updateWorkItemStateResponse.success) {
         (0, core_1.setFailed)(updateWorkItemStateResponse.message);
         return;
     }
-    (0, core_1.debug)(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -68223,13 +68222,9 @@ class GithubService {
             workItemId: null,
         };
         try {
-            console.log(`body: "${fullPrBody}"`);
-            console.log(`title: "${fullPrTitle}"`);
             let foundMatches = fullPrBody.match(/AB#[(0-9)]*/g);
-            console.log("matches from body: ", foundMatches !== null ? foundMatches.toString() : "no matches");
             if (foundMatches === null || foundMatches.length === 0) {
                 foundMatches = fullPrTitle.match(/AB#[(0-9)]*/g);
-                console.log("matches from title: ", foundMatches !== null ? foundMatches.toString() : "no matches");
             }
             if (foundMatches && foundMatches.length > 0) {
                 const fullWorkItemId = foundMatches[0];

@@ -16,11 +16,10 @@ const config_service_1 = require("./services/config-service");
 const github_service_1 = require("./services/github-service");
 const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    (0, core_1.debug)("Getting PR info");
+    console.log("Getting PR info");
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
-    console.log("prInfo: ", JSON.stringify(prInfo));
     if (!prInfo.success) {
         (0, core_1.setFailed)(prInfo.message);
         return;
@@ -36,14 +35,14 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(workItemIdResponse.message);
         return;
     }
-    (0, core_1.debug)(`Found work item id from PR${workItemIdResponse.workItemId}`);
+    console.log(`Found work item id from PR${workItemIdResponse.workItemId}`);
     const newState = configService.get("newState");
     const updateWorkItemStateResponse = yield azureDevOpsService.updateWorkItemState(Number(workItemIdResponse.workItemId), newState);
     if (!updateWorkItemStateResponse.success) {
         (0, core_1.setFailed)(updateWorkItemStateResponse.message);
         return;
     }
-    (0, core_1.debug)(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
+    console.log(`Updated work item ${workItemIdResponse.workItemId} to state ${newState}`);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

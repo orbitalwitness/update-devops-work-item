@@ -1,4 +1,4 @@
-import { debug, setFailed } from "@actions/core";
+import { setFailed } from "@actions/core";
 import { context } from "@actions/github";
 
 import { AzureDevOpsService } from "./services/azure-devops-service";
@@ -8,13 +8,12 @@ import { IGetPrInfoResponse } from "./interfaces/service-response.interface";
 import { IConfigService } from "./interfaces/config-service.interface";
 
 const getWorkItemId = async (configService: IConfigService) => {
-  debug("Getting PR info");
+  console.log("Getting PR info");
 
   const azureDevOpsService = new AzureDevOpsService(configService);
   const githubService = new GithubService(configService);
 
   const prInfo: IGetPrInfoResponse = await githubService.getPrInfo();
-  console.log("prInfo: ", JSON.stringify(prInfo));
   if (!prInfo.success) {
     setFailed(prInfo.message);
     return;
@@ -33,7 +32,7 @@ const getWorkItemId = async (configService: IConfigService) => {
     return;
   }
 
-  debug(`Found work item id from PR${workItemIdResponse.workItemId}`);
+  console.log(`Found work item id from PR${workItemIdResponse.workItemId}`);
   const newState = configService.get<string>("newState");
 
   const updateWorkItemStateResponse =
@@ -45,7 +44,7 @@ const getWorkItemId = async (configService: IConfigService) => {
     setFailed(updateWorkItemStateResponse.message);
     return;
   }
-  debug(
+  console.log(
     `Updated work item ${workItemIdResponse.workItemId} to state ${newState}`
   );
 };
