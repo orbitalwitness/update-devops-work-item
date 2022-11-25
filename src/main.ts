@@ -32,7 +32,12 @@ const getWorkItemId = async (configService: IConfigService) => {
     return;
   }
 
-  console.log(`Found work item id from PR${workItemIdResponse.workItemId}`);
+  if (!workItemIdResponse?.workItemId) {
+    console.log("Unable to find a PR number.");
+    return;
+  }
+
+  console.log(`Found work item id from PR: ${workItemIdResponse.workItemId}`);
   const newState = configService.get<string>("newState");
 
   const updateWorkItemStateResponse =

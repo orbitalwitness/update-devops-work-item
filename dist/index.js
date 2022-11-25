@@ -67930,7 +67930,11 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(workItemIdResponse.message);
         return;
     }
-    console.log(`Found work item id from PR${workItemIdResponse.workItemId}`);
+    if (!(workItemIdResponse === null || workItemIdResponse === void 0 ? void 0 : workItemIdResponse.workItemId)) {
+        console.log("Unable to find a PR number.");
+        return;
+    }
+    console.log(`Found work item id from PR: ${workItemIdResponse.workItemId}`);
     const newState = configService.get("newState");
     const updateWorkItemStateResponse = yield azureDevOpsService.updateWorkItemState(Number(workItemIdResponse.workItemId), newState);
     if (!updateWorkItemStateResponse.success) {
