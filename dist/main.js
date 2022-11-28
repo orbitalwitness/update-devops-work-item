@@ -16,7 +16,7 @@ const config_service_1 = require("./services/config-service");
 const github_service_1 = require("./services/github-service");
 const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log('Getting PR info');
+    console.log("Getting PR info");
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
@@ -24,10 +24,10 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
-    const prBody = (_a = prInfo['body']) !== null && _a !== void 0 ? _a : '';
-    const prTitle = prInfo['title'];
+    const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
+    const prTitle = prInfo["title"];
     if (!prTitle) {
-        (0, core_1.setFailed)('Unable to retrieve the title of the PR');
+        (0, core_1.setFailed)("Unable to retrieve the title of the PR");
         return;
     }
     const workItemIdResponse = githubService.getWorkItemIdFromPr(prBody, prTitle);
@@ -36,11 +36,11 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         return;
     }
     if (!(workItemIdResponse === null || workItemIdResponse === void 0 ? void 0 : workItemIdResponse.workItemId)) {
-        console.log('Unable to find a PR number.');
+        console.log("Unable to find a PR number.");
         return;
     }
     console.log(`Found work item id from PR: ${workItemIdResponse.workItemId}`);
-    const newState = configService.get('newState');
+    const newState = configService.get("newState");
     const updateWorkItemStateResponse = yield azureDevOpsService.updateWorkItemState(Number(workItemIdResponse.workItemId), newState);
     if (!updateWorkItemStateResponse.success) {
         (0, core_1.setFailed)(updateWorkItemStateResponse.message);

@@ -7,10 +7,11 @@ export class ConfigService implements IConfigService {
   constructor(githubContext: any, env: any) {
     if (!env.ado_token) console.log("Missing ado_token value");
     if (!env.gh_token) console.log("Missing gh_token value");
-    if (!env.organisation) console.log("Missing organisation value");
+    if (!env.ado_organisation) console.log("Missing organisation value");
 
     const adoOrganisation = env["ado_organisation"] ?? "";
     const adoUrl = `https://dev.azure.com/${adoOrganisation}`;
+    console.log("ADO url: ", adoUrl);
 
     this.env = {
       action: githubContext.action !== undefined ? githubContext.action : "",
