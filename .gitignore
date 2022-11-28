@@ -265,3 +265,4 @@ __pycache__/
 
 .env
 /node_modules/
+/azure-devops-test-harness/node_modules/
