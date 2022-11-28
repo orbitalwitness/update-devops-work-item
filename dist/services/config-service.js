@@ -12,7 +12,7 @@ class ConfigService {
             console.log("Missing organisation value");
         const adoOrganisation = (_a = env["ado_organisation"]) !== null && _a !== void 0 ? _a : "";
         const adoUrl = `https://dev.azure.com/${adoOrganisation}`;
-        console.log('ADO url: ', adoUrl);
+        console.log("ADO url: ", adoUrl);
         this.env = {
             action: githubContext.action !== undefined ? githubContext.action : "",
             adoToken: (_b = env["ado_token"]) !== null && _b !== void 0 ? _b : "",

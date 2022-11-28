@@ -28,7 +28,8 @@ const getWorkItemId = async (configService: IConfigService) => {
 
   const workItemIdResponse = githubService.getWorkItemIdFromPr(prBody, prTitle);
   if (!workItemIdResponse || !workItemIdResponse.success) {
-    setFailed(workItemIdResponse.message);
+    // Could fail here, but not going to. Just want to know why it hasn't worked.
+    console.log(workItemIdResponse.message);
     return;
   }
 
