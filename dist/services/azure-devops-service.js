@@ -72,7 +72,6 @@ class AzureDevOpsService {
                 return workItemResponse;
             }
             const workItem = workItemResponse.workItem;
-            const currentDescription = this.getWorkItemDescription(workItem);
             const currentState = this.getWorkItemState(workItem);
             if (currentState === "Closed") {
                 // Don't want to fail because of this
@@ -87,7 +86,7 @@ class AzureDevOpsService {
                 return response;
             }
             const timestamp = new Date().toISOString();
-            const newDescription = `${currentDescription}<br />${timestamp
+            const comment = `${timestamp
                 .substring(0, timestamp.length - 5)
                 .replace("T", " ")}: ${this.configService.get("description")}`;
             try {
@@ -100,7 +99,7 @@ class AzureDevOpsService {
                 patchDocument.push({
                     op: "add",
                     path: "/fields/System.History",
-                    value: newDescription,
+                    value: comment,
                 });
                 const workItemResult = yield client.updateWorkItem([], patchDocument, workItemId);
                 // check to see if the work item is null or undefined

@@ -73,7 +73,6 @@ export class AzureDevOpsService {
     }
 
     const workItem = workItemResponse.workItem;
-    const currentDescription = this.getWorkItemDescription(workItem);
     const currentState = this.getWorkItemState(workItem);
 
     if (currentState === "Closed") {
@@ -91,7 +90,7 @@ export class AzureDevOpsService {
     }
 
     const timestamp = new Date().toISOString();
-    const newDescription = `${currentDescription}<br />${timestamp
+    const comment = `${timestamp
       .substring(0, timestamp.length - 5)
       .replace("T", " ")}: ${this.configService.get<string>("description")}`;
 
@@ -105,7 +104,7 @@ export class AzureDevOpsService {
       patchDocument.push({
         op: "add",
         path: "/fields/System.History",
-        value: newDescription,
+        value: comment,
       });
 
       const workItemResult = await client.updateWorkItem(
