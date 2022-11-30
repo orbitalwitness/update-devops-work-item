@@ -90,9 +90,12 @@ export class AzureDevOpsService {
     }
 
     const timestamp = new Date().toISOString();
-    const comment = `${timestamp
+    const timestampText = timestamp
       .substring(0, timestamp.length - 5)
-      .replace("T", " ")}: ${this.configService.get<string>("description")}`;
+      .replace("T", " ");
+    const comment = `${timestampText}: ${this.configService.get<string>(
+      "description"
+    )}`;
 
     try {
       const patchDocument = [];

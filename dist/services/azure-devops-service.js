@@ -86,9 +86,10 @@ class AzureDevOpsService {
                 return response;
             }
             const timestamp = new Date().toISOString();
-            const comment = `${timestamp
+            const timestampText = timestamp
                 .substring(0, timestamp.length - 5)
-                .replace("T", " ")}: ${this.configService.get("description")}`;
+                .replace("T", " ");
+            const comment = `${timestampText}: ${this.configService.get("description")}`;
             try {
                 const patchDocument = [];
                 patchDocument.push({
