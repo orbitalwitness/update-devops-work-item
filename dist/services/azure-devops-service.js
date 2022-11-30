@@ -99,7 +99,7 @@ class AzureDevOpsService {
                 });
                 patchDocument.push({
                     op: "add",
-                    path: "/fields/System.Description",
+                    path: "/fields/System.History",
                     value: newDescription,
                 });
                 const workItemResult = yield client.updateWorkItem([], patchDocument, workItemId);

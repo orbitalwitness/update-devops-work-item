@@ -104,7 +104,7 @@ export class AzureDevOpsService {
       });
       patchDocument.push({
         op: "add",
-        path: "/fields/System.Description",
+        path: "/fields/System.History",
         value: newDescription,
       });
 
