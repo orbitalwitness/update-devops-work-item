@@ -28,6 +28,7 @@ export class GithubService {
 
     try {
       const data = await this.getPrData();
+      console.log("getPrInfo::data", JSON.stringify(data));
 
       if (data) {
         response.code = 200;

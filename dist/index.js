@@ -68212,6 +68212,7 @@ class GithubService {
             };
             try {
                 const data = yield this.getPrData();
+                console.log("getPrInfo::data", JSON.stringify(data));
                 if (data) {
                     response.code = 200;
                     response.message = "success";
