@@ -20,14 +20,13 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
     const azureDevOpsService = new azure_devops_service_1.AzureDevOpsService(configService);
     const githubService = new github_service_1.GithubService(configService);
     const prInfo = yield githubService.getPrInfo();
-    console.log("PR Info: ", JSON.stringify(prInfo));
     if (!prInfo.success) {
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
     if (prInfo.isDraft) {
         // Don't do anything if the PR is in the draft state.
-        console.log('This is a draft PR, so skipping.');
+        console.log("This is a draft PR, so skipping.");
         return;
     }
     const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
