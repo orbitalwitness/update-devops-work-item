@@ -8,6 +8,7 @@ export interface IGetPrInfoResponse extends IBaseResponse {
   body: string | null;
   status: string | null;
   title: string | null;
+  isDraft: boolean;
 }
 
 export interface IGetWorkItemIdFromPrResponse extends IBaseResponse {

@@ -67920,6 +67920,11 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
+    if (prInfo.isDraft) {
+        // Don't do anything if the PR is in the draft state.
+        console.log("This is a draft PR, so skipping.");
+        return;
+    }
     const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
     const prTitle = prInfo["title"];
     if (!prTitle) {
@@ -68209,10 +68214,10 @@ class GithubService {
                 body: null,
                 status: null,
                 title: null,
+                isDraft: false,
             };
             try {
                 const data = yield this.getPrData();
-                console.log("getPrInfo::data", JSON.stringify(data));
                 if (data) {
                     response.code = 200;
                     response.message = "success";
@@ -68220,6 +68225,7 @@ class GithubService {
                     response.body = data.body;
                     response.status = data.status;
                     response.title = data.title;
+                    response.isDraft = data.draft;
                 }
                 else {
                     response.message = `Unable to retrieve the pull request (${this.configService.get("pullNumber")})`;

@@ -28,10 +28,10 @@ class GithubService {
                 body: null,
                 status: null,
                 title: null,
+                isDraft: false,
             };
             try {
                 const data = yield this.getPrData();
-                console.log('getPrInfo::data', JSON.stringify(data));
                 if (data) {
                     response.code = 200;
                     response.message = "success";
@@ -39,6 +39,7 @@ class GithubService {
                     response.body = data.body;
                     response.status = data.status;
                     response.title = data.title;
+                    response.isDraft = data.draft;
                 }
                 else {
                     response.message = `Unable to retrieve the pull request (${this.configService.get("pullNumber")})`;

@@ -20,6 +20,12 @@ const getWorkItemId = async (configService: IConfigService) => {
     return;
   }
 
+  if (prInfo.isDraft) {
+    // Don't do anything if the PR is in the draft state.
+    console.log("This is a draft PR, so skipping.");
+    return;
+  }
+
   const prBody = prInfo["body"] ?? "";
   const prTitle = prInfo["title"];
   if (!prTitle) {

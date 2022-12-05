@@ -25,6 +25,11 @@ const getWorkItemId = (configService) => __awaiter(void 0, void 0, void 0, funct
         (0, core_1.setFailed)(prInfo.message);
         return;
     }
+    if (prInfo.isDraft) {
+        // Don't do anything if the PR is in the draft state.
+        console.log('This is a draft PR, so skipping.');
+        return;
+    }
     const prBody = (_a = prInfo["body"]) !== null && _a !== void 0 ? _a : "";
     const prTitle = prInfo["title"];
     if (!prTitle) {
